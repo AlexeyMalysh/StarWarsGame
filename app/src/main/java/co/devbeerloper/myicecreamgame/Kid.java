@@ -24,11 +24,12 @@ public class Kid {
     public Kid(Context context, float screenWidth, float screenHeigth) {
         speed = 6;
         positionX = screenWidth;
-        spriteSizeHeigth = 200;
-        spriteSizeWidth = 200;
+        spriteSizeHeigth = 150;
+        spriteSizeWidth = 150;
         positionY = random.nextInt((int) screenHeigth - spriteSizeHeigth - 100) + 100;
         //Getting bitmap from resource
-        Bitmap originalBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.kid);
+        int [] arr = new int[]{R.drawable.apple, R.drawable.cherry};
+        Bitmap originalBitmap = BitmapFactory.decodeResource(context.getResources(), arr[random.nextInt(arr.length)]);
         spriteKid = Bitmap.createScaledBitmap(originalBitmap, spriteSizeWidth, spriteSizeHeigth, false);
 
         this.screenWidth = screenWidth;

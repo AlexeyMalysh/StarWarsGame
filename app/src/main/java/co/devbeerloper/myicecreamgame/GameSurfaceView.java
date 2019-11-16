@@ -18,6 +18,7 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
     private ArrayList<Cloud> clouds;
     private ArrayList<Kid> kids;
     private ArrayList<Adult> adults;
+    private ArrayList<PowerUp> powerUps;
     private Paint paint;
     private Canvas canvas;
     private Context context;
@@ -44,6 +45,7 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
         clouds = new ArrayList<Cloud>();
         kids = new ArrayList<Kid>();
         adults = new ArrayList<Adult>();
+        powerUps = new ArrayList<PowerUp>();
         paint = new Paint();
         paint.setTextSize(150);
         holder = getHolder();
@@ -65,6 +67,22 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
     }
 
     private void updateInfo() {
+        if (random.nextInt(100) < 1)
+            powerUps.add(new PowerUp(context, screenWith, screenHeight));
+        for (PowerUp p : powerUps)
+            p.updateInfo();
+        for (int i = 0; i < powerUps.size(); i++) {
+            if (powerUps.get(i).getPositionX() < -powerUps.get(i).getSpriteSizeWidth())
+                powerUps.remove(i--);
+            else if (collitedWhithIceCreamCar(powerUps.get(i).getPositionX(), powerUps.get(i).getPositionY(), powerUps.get(i).getSpriteSizeWidth(), powerUps.get(i).getSpriteSizeHeigth())) {
+                powerUps.remove(i--);
+                for(Adult a : adults){
+                    a.setPowerUp(true);
+                }
+            }
+        }
+
+
         if (random.nextInt(100) < 2)
             clouds.add(new Cloud(context, screenWith, screenHeight));
         for (Cloud c : clouds)
@@ -76,6 +94,7 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
 
         if (random.nextInt(100) < 2) {
             Kid toAdd = new Kid(context, screenWith, screenHeight);
+            kids.add(toAdd);
         }
         for (Kid k : kids)
             k.updateInfo();
@@ -120,7 +139,7 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
     private void paintFrame() {
         if (holder.getSurface().isValid()) {
             canvas = holder.lockCanvas();
-            canvas.drawColor(Color.CYAN);
+            canvas.drawColor(Color.BLACK);
             for (Cloud c : clouds) {
                 canvas.drawBitmap(c.getSpriteCloud(), c.getPositionX(), c.getPositionY(), paint);
             }

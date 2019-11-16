@@ -8,13 +8,13 @@ import android.support.annotation.RequiresApi;
 
 public class IceCreamCar {
 
-    public static final float INIT_X =100;
-    public static final float INIT_Y =100;
-    public int SPRITE_SIZE_WIDTH =480;
-    public int SPRITE_SIZE_HEIGTH=400;
-    public static final float GRAVITY_FORCE=10;
+    public static final float INIT_X = 100;
+    public static final float INIT_Y = 100;
+    public int SPRITE_SIZE_WIDTH = 200;
+    public int SPRITE_SIZE_HEIGTH = 200;
+    public static final float GRAVITY_FORCE = 15;
     private final int MIN_SPEED = 1;
-    private final int MAX_SPEED = 20;
+    private final int MAX_SPEED = 30;
 
     private float maxY;
     private float maxX;
@@ -26,30 +26,30 @@ public class IceCreamCar {
     private boolean isJumping;
 
 
-    public IceCreamCar (Context context, float screenWidth, float screenHeigth){
+    public IceCreamCar(Context context, float screenWidth, float screenHeigth) {
 
         speed = 1;
         positionX = this.INIT_X;
         positionY = this.INIT_Y;
         isJumping = false;
         //Getting bitmap from resource
-        Bitmap originalBitmap= BitmapFactory.decodeResource(context.getResources(), R.drawable.icecreamcar);
-        spriteIcecreamCar  = Bitmap.createScaledBitmap(originalBitmap, SPRITE_SIZE_WIDTH, SPRITE_SIZE_HEIGTH, false);
+        Bitmap originalBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.pacman);
+        spriteIcecreamCar = Bitmap.createScaledBitmap(originalBitmap, SPRITE_SIZE_WIDTH, SPRITE_SIZE_HEIGTH, false);
 
-        this.maxX = screenWidth - (spriteIcecreamCar.getWidth()/2);
+        this.maxX = screenWidth - (spriteIcecreamCar.getWidth() / 2);
         this.maxY = screenHeigth - spriteIcecreamCar.getHeight();
     }
 
-    public IceCreamCar (Context context, float initialX, float initialY, float screenWidth, float screenHeigth){
+    public IceCreamCar(Context context, float initialX, float initialY, float screenWidth, float screenHeigth) {
 
         speed = 1;
         positionX = initialX;
         positionY = initialY;
 
-        Bitmap originalBitmap= BitmapFactory.decodeResource(context.getResources(), R.drawable.icecreamcar);
-        spriteIcecreamCar  = Bitmap.createScaledBitmap(originalBitmap, SPRITE_SIZE_WIDTH, SPRITE_SIZE_HEIGTH, false);
+        Bitmap originalBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.icecreamcar);
+        spriteIcecreamCar = Bitmap.createScaledBitmap(originalBitmap, SPRITE_SIZE_WIDTH, SPRITE_SIZE_HEIGTH, false);
 
-        this.maxX = screenWidth - (spriteIcecreamCar.getWidth()/2);
+        this.maxX = screenWidth - (spriteIcecreamCar.getWidth() / 2);
         this.maxY = screenHeigth - spriteIcecreamCar.getHeight();
 
     }
@@ -105,12 +105,12 @@ public class IceCreamCar {
     /**
      * Control the position and behaviour of the icecream car
      */
-    public void updateInfo () {
+    public void updateInfo() {
 
         if (isJumping) {
-            speed += 5;
+            speed += 7;
         } else {
-            speed -= 5;
+            speed -= 7;
         }
 
         if (speed > MAX_SPEED) {
@@ -127,8 +127,6 @@ public class IceCreamCar {
         if (positionY > maxY) {
             positionY = maxY;
         }
-
-
 
 
     }

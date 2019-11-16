@@ -8,8 +8,8 @@ import java.util.Random;
 
 public class Adult {
 
-    public int spriteSizeWidth = 200;
-    public int spriteSizeHeigth = 400;
+    public int spriteSizeWidth = 150;
+    public int spriteSizeHeigth = 150;
 
     private float speed;
     private float positionX;
@@ -18,17 +18,21 @@ public class Adult {
 
     private float screenWidth;
     Random random = new Random();
-
+    private boolean isPowerUp;
+    private Context context;
 
     public Adult(Context context, float screenWidth, float screenHeigth) {
         speed = 6;
+        this.context = context;
         positionX = screenWidth;
         positionY = random.nextInt((int) screenHeigth - spriteSizeHeigth - 100) + 100;
         //Getting bitmap from resource
-        Bitmap originalBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.kid);
+        int arr[] = new int[]{R.drawable.ghost1,R.drawable.ghost2,R.drawable.ghost3,R.drawable.ghost4};
+        Bitmap originalBitmap = BitmapFactory.decodeResource(context.getResources(), arr[random.nextInt(arr.length)]);
         spriteKid = Bitmap.createScaledBitmap(originalBitmap, spriteSizeWidth, spriteSizeHeigth, false);
 
         this.screenWidth = screenWidth;
+        this.isPowerUp = false;
     }
 
     public float getSpeed() {
@@ -79,6 +83,15 @@ public class Adult {
         this.spriteSizeHeigth = spriteSizeHeigth;
     }
 
+    public boolean isPowerUp() {
+        return isPowerUp;
+    }
+
+    public void setPowerUp(boolean powerUp) {
+        Bitmap originalBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.ghosty);
+        spriteKid = Bitmap.createScaledBitmap(originalBitmap, spriteSizeWidth, spriteSizeHeigth, false);
+        isPowerUp = powerUp;
+    }
 
     /**
      * Control the position and behaviour of the icecream car
