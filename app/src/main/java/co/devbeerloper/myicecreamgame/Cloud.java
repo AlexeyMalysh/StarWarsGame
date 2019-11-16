@@ -20,7 +20,7 @@ public class Cloud {
 
     public Cloud (Context context, float screenWidth, float screenHeigth){
         SPRITE_SIZE_HEIGTH = SPRITE_SIZE_WIDTH = random.nextInt(100) + 100;
-        speed = random.nextInt(6) + 1;
+        speed = random.nextInt(3) + 3;
         positionX = screenWidth;
         positionY = random.nextInt(100);
         //Getting bitmap from resource

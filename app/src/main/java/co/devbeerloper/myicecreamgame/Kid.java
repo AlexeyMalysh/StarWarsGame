@@ -8,8 +8,9 @@ import java.util.Random;
 
 public class Kid {
 
-    public static final int SPRITE_SIZE_WIDTH =200;
-    public static final int SPRITE_SIZE_HEIGTH=200;
+
+    public int spriteSizeWidth;
+    public int spriteSizeHeigth;
 
     private float speed;
     private float positionX;
@@ -20,16 +21,29 @@ public class Kid {
     Random random = new Random();
 
 
-    public Kid (Context context, float screenWidth, float screenHeigth){
+    public Kid(Context context, float screenWidth, float screenHeigth) {
         speed = 6;
         positionX = screenWidth;
-        positionY = random.nextInt((int)screenHeigth-SPRITE_SIZE_HEIGTH-100)+100;
+        spriteSizeHeigth = 200;
+        spriteSizeWidth = 200;
+        positionY = random.nextInt((int) screenHeigth - spriteSizeHeigth - 100) + 100;
         //Getting bitmap from resource
-        Bitmap originalBitmap= BitmapFactory.decodeResource(context.getResources(), R.drawable.kid);
-        spriteKid = Bitmap.createScaledBitmap(originalBitmap, SPRITE_SIZE_WIDTH, SPRITE_SIZE_HEIGTH, false);
+        Bitmap originalBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.kid);
+        spriteKid = Bitmap.createScaledBitmap(originalBitmap, spriteSizeWidth, spriteSizeHeigth, false);
 
         this.screenWidth = screenWidth;
     }
+
+
+    public int getSpriteSizeWidth() {
+        return spriteSizeWidth;
+    }
+
+
+    public int getSpriteSizeHeigth() {
+        return spriteSizeHeigth;
+    }
+
 
     public float getSpeed() {
         return speed;
@@ -67,8 +81,8 @@ public class Kid {
     /**
      * Control the position and behaviour of the icecream car
      */
-    public void updateInfo () {
-        this.positionX-= speed;
+    public void updateInfo() {
+        this.positionX -= speed;
     }
 }
 
