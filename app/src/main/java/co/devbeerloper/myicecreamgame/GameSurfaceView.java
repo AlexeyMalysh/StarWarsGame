@@ -8,14 +8,22 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import java.util.ArrayList;
+import java.util.Random;
+
 public class GameSurfaceView extends SurfaceView implements Runnable {
 
     private boolean isPlaying;
     private IceCreamCar icecreamCar;
+    private ArrayList<Cloud> clouds;
     private Paint paint;
     private Canvas canvas;
+    private Context context;
+    private float screenWith;
+    private float screenHeight;
     private SurfaceHolder holder;
     private Thread gameplayThread = null;
+    Random random = new Random();
 
     /**
      * Contructor
@@ -23,7 +31,11 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
      */
     public GameSurfaceView(Context context, float screenWith, float screenHeight) {
         super(context);
+        this.context = context;
+        this.screenWith = screenWith;
+        this.screenHeight = screenHeight;
         icecreamCar = new IceCreamCar(context, screenWith, screenHeight);
+        clouds = new ArrayList<Cloud>();
         paint = new Paint();
         holder = getHolder();
         isPlaying = true;
@@ -43,13 +55,30 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
     }
 
     private void updateInfo() {
+        if(random.nextInt(100) < 10)
+            clouds.add(new Cloud(context,screenWith,screenHeight));
+
+        for (Cloud c: clouds)
+            c.updateInfo();
+
+        for (int i=0; i < clouds.size(); i++){
+            if(clouds.get(i).getPositionX()<-clouds.get(i).SPRITE_SIZE_WIDTH)
+                clouds.remove(i--);
+        }
+
         icecreamCar.updateInfo ();
+
+
+
     }
 
     private void paintFrame() {
         if (holder.getSurface().isValid()){
             canvas = holder.lockCanvas();
             canvas.drawColor(Color.CYAN);
+            for(Cloud c: clouds){
+                canvas.drawBitmap(c.getSpriteCloud(),c.getPositionX(),c.getPositionY(),paint);
+            }
             canvas.drawBitmap(icecreamCar.getSpriteIcecreamCar(),icecreamCar.getPositionX(),icecreamCar.getPositionY(),paint);
             holder.unlockCanvasAndPost(canvas);
         }
