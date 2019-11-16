@@ -16,6 +16,8 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
     private boolean isPlaying;
     private IceCreamCar icecreamCar;
     private ArrayList<Cloud> clouds;
+    private ArrayList<Kid> kids;
+    private ArrayList<Adult> adults;
     private Paint paint;
     private Canvas canvas;
     private Context context;
@@ -36,6 +38,8 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
         this.screenHeight = screenHeight;
         icecreamCar = new IceCreamCar(context, screenWith, screenHeight);
         clouds = new ArrayList<Cloud>();
+        kids = new ArrayList<Kid>();
+        adults = new ArrayList<Adult>();
         paint = new Paint();
         holder = getHolder();
         isPlaying = true;
@@ -57,14 +61,32 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
     private void updateInfo() {
         if(random.nextInt(100) < 10)
             clouds.add(new Cloud(context,screenWith,screenHeight));
-
         for (Cloud c: clouds)
             c.updateInfo();
-
         for (int i=0; i < clouds.size(); i++){
             if(clouds.get(i).getPositionX()<-clouds.get(i).SPRITE_SIZE_WIDTH)
                 clouds.remove(i--);
         }
+
+        if(random.nextInt(100) < 3)
+            kids.add(new Kid(context,screenWith,screenHeight));
+        for (Kid k: kids)
+            k.updateInfo();
+        for (int i=0; i < kids.size(); i++){
+            if(kids.get(i).getPositionX()<-kids.get(i).SPRITE_SIZE_WIDTH)
+                kids.remove(i--);
+        }
+
+        if(random.nextInt(100) < 1)
+            adults.add(new Adult(context,screenWith,screenHeight));
+        for (Adult a: adults)
+            a.updateInfo();
+        for (int i=0; i < adults.size(); i++){
+            if(adults.get(i).getPositionX()<-adults.get(i).SPRITE_SIZE_WIDTH)
+                adults.remove(i--);
+        }
+
+
 
         icecreamCar.updateInfo ();
 
@@ -78,6 +100,12 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
             canvas.drawColor(Color.CYAN);
             for(Cloud c: clouds){
                 canvas.drawBitmap(c.getSpriteCloud(),c.getPositionX(),c.getPositionY(),paint);
+            }
+            for(Kid k: kids){
+                canvas.drawBitmap(k.getSpriteKid(),k.getPositionX(),k.getPositionY(),paint);
+            }
+            for(Adult a: adults){
+                canvas.drawBitmap(a.getSpriteAdult(),a.getPositionX(),a.getPositionY(),paint);
             }
             canvas.drawBitmap(icecreamCar.getSpriteIcecreamCar(),icecreamCar.getPositionX(),icecreamCar.getPositionY(),paint);
             holder.unlockCanvasAndPost(canvas);
