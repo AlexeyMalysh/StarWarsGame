@@ -67,7 +67,7 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
     }
 
     private void updateInfo() {
-        if (random.nextInt(100) < 1)
+        if (random.nextInt(1000) < 5 && powerUps.isEmpty())
             powerUps.add(new PowerUp(context, screenWith, screenHeight));
         for (PowerUp p : powerUps)
             p.updateInfo();
@@ -117,8 +117,13 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
             if (adults.get(i).getPositionX() < -adults.get(i).spriteSizeWidth)
                 adults.remove(i--);
             else if (collitedWhithIceCreamCar(adults.get(i).getPositionX(), adults.get(i).getPositionY(), adults.get(i).spriteSizeWidth, adults.get(i).spriteSizeHeigth)) {
+                if(adults.get(i).isPowerUp()) {
+                    score++;
+                }
+                else {
+                    score -= 2;
+                }
                 adults.remove(i--);
-                score -= 2;
             }
         }
 
@@ -139,7 +144,7 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
     private void paintFrame() {
         if (holder.getSurface().isValid()) {
             canvas = holder.lockCanvas();
-            canvas.drawColor(Color.BLACK);
+            canvas.drawColor(Color.WHITE);
             for (Cloud c : clouds) {
                 canvas.drawBitmap(c.getSpriteCloud(), c.getPositionX(), c.getPositionY(), paint);
             }
@@ -149,8 +154,11 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
             for (Adult a : adults) {
                 canvas.drawBitmap(a.getSpriteAdult(), a.getPositionX(), a.getPositionY(), paint);
             }
+            for (PowerUp p : powerUps) {
+                canvas.drawBitmap(p.getSpriteKid(), p.getPositionX(), p.getPositionY(), paint);
+            }
             canvas.drawBitmap(icecreamCar.getSpriteIcecreamCar(), icecreamCar.getPositionX(), icecreamCar.getPositionY(), paint);
-            canvas.drawText("" + score, 100, 50, paint);
+            canvas.drawText("" + score, 100, 70, paint);
             holder.unlockCanvasAndPost(canvas);
         }
 
