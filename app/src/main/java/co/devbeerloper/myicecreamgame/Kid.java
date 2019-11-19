@@ -28,7 +28,7 @@ public class Kid {
         spriteSizeWidth = 150;
         positionY = random.nextInt((int) screenHeigth - spriteSizeHeigth - 100) + 100;
         //Getting bitmap from resource
-        int [] arr = new int[]{R.drawable.apple, R.drawable.cherry};
+        int[] arr = new int[]{R.drawable.apple, R.drawable.cherry};
         Bitmap originalBitmap = BitmapFactory.decodeResource(context.getResources(), arr[random.nextInt(arr.length)]);
         spriteKid = Bitmap.createScaledBitmap(originalBitmap, spriteSizeWidth, spriteSizeHeigth, false);
 

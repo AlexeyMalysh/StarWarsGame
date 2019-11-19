@@ -29,13 +29,15 @@ public class IceCreamCar {
     public IceCreamCar(Context context, float screenWidth, float screenHeigth) {
 
         speed = 1;
-        positionX = this.INIT_X;
-        positionY = this.INIT_Y;
+
         isJumping = false;
         //Getting bitmap from resource
         Bitmap originalBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.pacman);
         spriteIcecreamCar = Bitmap.createScaledBitmap(originalBitmap, SPRITE_SIZE_WIDTH, SPRITE_SIZE_HEIGTH, false);
 
+
+        positionX = this.INIT_X;
+        positionY = screenHeigth / 2 - spriteIcecreamCar.getWidth() / 2;
         this.maxX = screenWidth - (spriteIcecreamCar.getWidth() / 2);
         this.maxY = screenHeigth - spriteIcecreamCar.getHeight();
     }

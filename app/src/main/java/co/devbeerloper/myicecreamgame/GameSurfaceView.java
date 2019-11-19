@@ -14,6 +14,7 @@ import java.util.Random;
 public class GameSurfaceView extends SurfaceView implements Runnable {
 
     private boolean isPlaying;
+    private boolean isGaming;
     private IceCreamCar icecreamCar;
     private ArrayList<Cloud> clouds;
     private ArrayList<Kid> kids;
@@ -22,35 +23,41 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
     private Paint paint;
     private Canvas canvas;
     private Context context;
-    private float screenWith;
+    private float screenWidth;
     private float screenHeight;
     private SurfaceHolder holder;
     private Thread gameplayThread = null;
     Random random = new Random();
     private int score;
+    private int lifes;
+    private int nexTop;
 
     /**
      * Contructor
      *
      * @param context
      */
-    public GameSurfaceView(Context context, float screenWith, float screenHeight) {
+    public GameSurfaceView(Context context, float screenWidth, float screenHeight) {
         super(context);
 
         this.context = context;
-        this.screenWith = screenWith;
+        this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
 
-        icecreamCar = new IceCreamCar(context, screenWith, screenHeight);
+        icecreamCar = new IceCreamCar(context, screenWidth, screenHeight);
         clouds = new ArrayList<Cloud>();
         kids = new ArrayList<Kid>();
         adults = new ArrayList<Adult>();
         powerUps = new ArrayList<PowerUp>();
         paint = new Paint();
-        paint.setTextSize(150);
+        paint.setTextSize(100);
+        paint.setColor(Color.WHITE);
         holder = getHolder();
         isPlaying = true;
+        isGaming = false;
         score = 0;
+        lifes = 3;
+        nexTop = 100;
     }
 
     /**
@@ -59,41 +66,40 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
     @Override
     public void run() {
         while (isPlaying) {
-            updateInfo();
+            updateBackGround();
+            if (isGaming)
+                updateInfo();
             paintFrame();
-
         }
+    }
 
+    private void updateBackGround() {
+        if (random.nextInt(100) < 20)
+            clouds.add(new Cloud(context, screenWidth, screenHeight));
+        for (Cloud c : clouds)
+            c.updateInfo();
+        for (int i = 0; i < clouds.size(); i++)
+            if (clouds.get(i).getPositionX() < -clouds.get(i).SPRITE_SIZE_WIDTH)
+                clouds.remove(i--);
     }
 
     private void updateInfo() {
-        if (random.nextInt(1000) < 5 && powerUps.isEmpty())
-            powerUps.add(new PowerUp(context, screenWith, screenHeight));
+
+        if (random.nextInt(1000) < 1 && powerUps.isEmpty())
+            powerUps.add(new PowerUp(context, screenWidth, screenHeight));
         for (PowerUp p : powerUps)
             p.updateInfo();
-        for (int i = 0; i < powerUps.size(); i++) {
+        for (int i = 0; i < powerUps.size(); i++)
             if (powerUps.get(i).getPositionX() < -powerUps.get(i).getSpriteSizeWidth())
                 powerUps.remove(i--);
             else if (collitedWhithIceCreamCar(powerUps.get(i).getPositionX(), powerUps.get(i).getPositionY(), powerUps.get(i).getSpriteSizeWidth(), powerUps.get(i).getSpriteSizeHeigth())) {
                 powerUps.remove(i--);
-                for(Adult a : adults){
+                for (Adult a : adults)
                     a.setPowerUp(true);
-                }
             }
-        }
-
-
-        if (random.nextInt(100) < 2)
-            clouds.add(new Cloud(context, screenWith, screenHeight));
-        for (Cloud c : clouds)
-            c.updateInfo();
-        for (int i = 0; i < clouds.size(); i++) {
-            if (clouds.get(i).getPositionX() < -clouds.get(i).SPRITE_SIZE_WIDTH)
-                clouds.remove(i--);
-        }
 
         if (random.nextInt(100) < 2) {
-            Kid toAdd = new Kid(context, screenWith, screenHeight);
+            Kid toAdd = new Kid(context, screenWidth, screenHeight);
             kids.add(toAdd);
         }
         for (Kid k : kids)
@@ -106,27 +112,29 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
                 kids.remove(i--);
                 score += 2;
             }
-
         }
 
         if (random.nextInt(100) < 1)
-            adults.add(new Adult(context, screenWith, screenHeight));
+            adults.add(new Adult(context, screenWidth, screenHeight));
         for (Adult a : adults)
             a.updateInfo();
         for (int i = 0; i < adults.size(); i++) {
             if (adults.get(i).getPositionX() < -adults.get(i).spriteSizeWidth)
                 adults.remove(i--);
             else if (collitedWhithIceCreamCar(adults.get(i).getPositionX(), adults.get(i).getPositionY(), adults.get(i).spriteSizeWidth, adults.get(i).spriteSizeHeigth)) {
-                if(adults.get(i).isPowerUp()) {
+                if (adults.get(i).isPowerUp()) {
                     score++;
-                }
-                else {
-                    score -= 2;
+                } else {
+                    lifes--;
                 }
                 adults.remove(i--);
             }
         }
 
+        if (score >= nexTop) {
+            lifes++;
+            nexTop += 100;
+        }
 
         icecreamCar.updateInfo();
     }
@@ -144,7 +152,7 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
     private void paintFrame() {
         if (holder.getSurface().isValid()) {
             canvas = holder.lockCanvas();
-            canvas.drawColor(Color.WHITE);
+            canvas.drawColor(Color.BLACK);
             for (Cloud c : clouds) {
                 canvas.drawBitmap(c.getSpriteCloud(), c.getPositionX(), c.getPositionY(), paint);
             }
@@ -158,7 +166,8 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
                 canvas.drawBitmap(p.getSpriteKid(), p.getPositionX(), p.getPositionY(), paint);
             }
             canvas.drawBitmap(icecreamCar.getSpriteIcecreamCar(), icecreamCar.getPositionX(), icecreamCar.getPositionY(), paint);
-            canvas.drawText("" + score, 100, 70, paint);
+            canvas.drawText("Score: " + score, screenWidth / 100 * 10, 100, paint);
+            canvas.drawText("Lifes: " + lifes, screenWidth / 100 * 50, 100, paint);
             holder.unlockCanvasAndPost(canvas);
         }
 
@@ -167,6 +176,7 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
 
     public void pause() {
         isPlaying = false;
+        isGaming = false;
         try {
             gameplayThread.join();
         } catch (InterruptedException e) {
@@ -176,7 +186,6 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
 
 
     public void resume() {
-
         isPlaying = true;
         gameplayThread = new Thread(this);
         gameplayThread.start();
@@ -192,6 +201,7 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
     public boolean onTouchEvent(MotionEvent motionEvent) {
         switch (motionEvent.getAction() & MotionEvent.ACTION_MASK) {
             case MotionEvent.ACTION_UP:
+                isGaming = true;
                 System.out.println("TOUCH UP - STOP JUMPING");
                 icecreamCar.setJumping(false);
                 break;

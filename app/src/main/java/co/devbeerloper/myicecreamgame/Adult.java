@@ -27,7 +27,7 @@ public class Adult {
         positionX = screenWidth;
         positionY = random.nextInt((int) screenHeigth - spriteSizeHeigth - 100) + 100;
         //Getting bitmap from resource
-        int arr[] = new int[]{R.drawable.ghost1,R.drawable.ghost2,R.drawable.ghost3,R.drawable.ghost4};
+        int arr[] = new int[]{R.drawable.ghost1, R.drawable.ghost2, R.drawable.ghost3, R.drawable.ghost4};
         Bitmap originalBitmap = BitmapFactory.decodeResource(context.getResources(), arr[random.nextInt(arr.length)]);
         spriteKid = Bitmap.createScaledBitmap(originalBitmap, spriteSizeWidth, spriteSizeHeigth, false);
 

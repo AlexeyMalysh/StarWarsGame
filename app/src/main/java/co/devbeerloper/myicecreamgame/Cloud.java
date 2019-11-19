@@ -8,8 +8,8 @@ import java.util.Random;
 
 public class Cloud {
 
-    public static  int SPRITE_SIZE_WIDTH;
-    public static  int SPRITE_SIZE_HEIGTH;
+    public static int SPRITE_SIZE_WIDTH;
+    public static int SPRITE_SIZE_HEIGTH;
 
     private float speed = 0;
     private float positionX;
@@ -18,18 +18,17 @@ public class Cloud {
     Random random = new Random();
 
 
-    public Cloud (Context context, float screenWidth, float screenHeigth){
-        SPRITE_SIZE_HEIGTH = SPRITE_SIZE_WIDTH = random.nextInt(100) + 100;
+    public Cloud(Context context, float screenWidth, float screenHeigth) {
+        SPRITE_SIZE_HEIGTH = SPRITE_SIZE_WIDTH = (random.nextInt(3) + 1) * 10;
         speed = random.nextInt(3) + 3;
         positionX = screenWidth;
-        positionY = random.nextInt(100);
+        positionY = random.nextInt((int) screenHeigth - SPRITE_SIZE_HEIGTH);
         //Getting bitmap from resource
-        Bitmap originalBitmap= BitmapFactory.decodeResource(context.getResources(), R.drawable.cloud);
-        spriteCloud  = Bitmap.createScaledBitmap(originalBitmap, SPRITE_SIZE_WIDTH, SPRITE_SIZE_HEIGTH, false);
+        Bitmap originalBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.cloud);
+        spriteCloud = Bitmap.createScaledBitmap(originalBitmap, SPRITE_SIZE_WIDTH, SPRITE_SIZE_HEIGTH, false);
 
 
     }
-
 
 
     public static int getSpriteSizeWidth() {
@@ -39,6 +38,7 @@ public class Cloud {
     public static int getSpriteSizeHeigth() {
         return SPRITE_SIZE_HEIGTH;
     }
+
     public float getSpeed() {
         return speed;
     }
@@ -72,15 +72,12 @@ public class Cloud {
     }
 
 
-
     /**
      * Control the position and behaviour of the icecream car
      */
-    public void updateInfo () {
+    public void updateInfo() {
         this.positionX -= speed;
-
     }
-
 
 
 }
