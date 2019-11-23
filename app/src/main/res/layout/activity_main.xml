@@ -4,38 +4,179 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
-    >
+    android:background="@color/colorBlack"
+    tools:context=".MainActivity">
 
     <TextView
         android:id="@+id/tvGameTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="THE ICE CREAM GAME"
-        android:textAllCaps="false"
+        android:text="Pac-Man"
+        android:textAllCaps="true"
+        android:textColor="@color/colorWhite"
+        android:textSize="60sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/hor1"
+        app:layout_constraintStart_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="0dp"
+
+    <TextView
+        android:id="@+id/tv1"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="52dp"
-        android:layout_marginLeft="52dp"
-        android:layout_marginTop="80dp"
-        android:layout_marginEnd="52dp"
-        android:layout_marginRight="52dp"
-        android:layout_marginBottom="78dp"
-        android:adjustViewBounds="true"
-        android:contentDescription="Image of the game"
-        app:layout_constraintBottom_toTopOf="@+id/tvGameTitle"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/icecmenu" />
+        android:text="Player"
+        android:textColor="@color/colorWhite"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/hor11"
+        app:layout_constraintEnd_toStartOf="@id/ver3"
+        app:layout_constraintStart_toEndOf="@id/ver2"
+        app:layout_constraintTop_toBottomOf="@id/hor1" />
+
+    <TextView
+        android:id="@+id/tv2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Edibles"
+        android:textColor="@color/colorWhite"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/hor12"
+        app:layout_constraintStart_toEndOf="@id/ver2"
+        app:layout_constraintEnd_toStartOf="@id/ver3"
+        app:layout_constraintTop_toBottomOf="@id/hor11"
+        />
+
+    <TextView
+        android:id="@+id/tv3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Power-Up"
+        android:textColor="@color/colorWhite"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/hor13"
+        app:layout_constraintStart_toEndOf="@id/ver2"
+        app:layout_constraintEnd_toStartOf="@id/ver3"
+        app:layout_constraintTop_toBottomOf="@id/hor12"
+        />
+
+    <TextView
+        android:id="@+id/tv4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Enemies"
+        android:textColor="@color/colorWhite"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/hor13"
+        app:layout_constraintStart_toEndOf="@id/ver2"
+        app:layout_constraintEnd_toStartOf="@id/ver3"
+        app:layout_constraintTop_toBottomOf="@id/hor2"
+        />
+
+    <ImageView
+        android:id="@+id/player"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toTopOf="@id/hor11"
+        app:layout_constraintStart_toEndOf="@id/ver1"
+        app:layout_constraintEnd_toStartOf="@id/ver2"
+        app:layout_constraintTop_toBottomOf="@id/hor1"
+        app:srcCompat="@drawable/pacman" />
+
+    <ImageView
+        android:id="@+id/edible1"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toTopOf="@id/hor12"
+        app:layout_constraintStart_toEndOf="@id/ver1"
+        app:layout_constraintEnd_toStartOf="@id/edible2"
+        app:layout_constraintTop_toBottomOf="@id/hor11"
+        app:srcCompat="@drawable/cherry" />
+
+    <ImageView
+        android:id="@+id/edible2"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toTopOf="@id/hor12"
+        app:layout_constraintStart_toEndOf="@id/edible1"
+        app:layout_constraintEnd_toStartOf="@id/edible3"
+        app:layout_constraintTop_toBottomOf="@id/hor11"
+        app:srcCompat="@drawable/apple" />
+
+    <ImageView
+        android:id="@+id/edible3"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toTopOf="@id/hor12"
+        app:layout_constraintStart_toEndOf="@id/edible2"
+        app:layout_constraintEnd_toStartOf="@id/ver2"
+        app:layout_constraintTop_toBottomOf="@id/hor11"
+        app:srcCompat="@drawable/ghosty" />
+
+    <ImageView
+        android:id="@+id/powerUp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toTopOf="@id/hor13"
+        app:layout_constraintStart_toEndOf="@id/ver1"
+        app:layout_constraintEnd_toStartOf="@id/ver2"
+        app:layout_constraintTop_toBottomOf="@id/hor12"
+        app:srcCompat="@drawable/gold" />
+
+    <ImageView
+        android:id="@+id/ghos1"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toTopOf="@id/hor2"
+        app:layout_constraintStart_toEndOf="@id/ver1"
+        app:layout_constraintEnd_toStartOf="@id/ghost2"
+        app:layout_constraintTop_toBottomOf="@id/hor13"
+        app:srcCompat="@drawable/ghost1" />
+
+    <ImageView
+        android:id="@+id/ghost2"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toTopOf="@id/hor2"
+        app:layout_constraintStart_toEndOf="@id/ghos1"
+        app:layout_constraintEnd_toStartOf="@id/ghost3"
+        app:layout_constraintTop_toBottomOf="@id/hor13"
+        app:srcCompat="@drawable/ghost2" />
+
+    <ImageView
+        android:id="@+id/ghost3"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toTopOf="@id/hor2"
+        app:layout_constraintStart_toEndOf="@id/ghost2"
+        app:layout_constraintEnd_toStartOf="@id/ghos4"
+        app:layout_constraintTop_toBottomOf="@id/hor13"
+        app:srcCompat="@drawable/ghost3" />
+
+    <ImageView
+        android:id="@+id/ghos4"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toTopOf="@id/hor2"
+        app:layout_constraintStart_toEndOf="@id/ghost3"
+        app:layout_constraintEnd_toStartOf="@id/ver2"
+        app:layout_constraintTop_toBottomOf="@id/hor13"
+        app:srcCompat="@drawable/ghost4" />
+
+
 
     <Button
         android:id="@+id/btnPlayGame"
@@ -52,6 +193,62 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvGameTitle" />
+        app:layout_constraintTop_toBottomOf="@+id/hor2" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/hor1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.1" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/hor11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.3" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/hor12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.45" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/hor13"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.6" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/ver1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.05" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/ver2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/ver3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.95" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/hor2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.8" />
 
 </android.support.constraint.ConstraintLayout>
