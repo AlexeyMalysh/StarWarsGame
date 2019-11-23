@@ -1,5 +1,7 @@
 package co.devbeerloper.myicecreamgame;
 
+import android.graphics.Bitmap;
+
 public class Bullet implements Sprite {
     @Override
     public float positionX() {
@@ -20,4 +22,20 @@ public class Bullet implements Sprite {
     public int spriteSizeWidth() {
         return 0;
     }
+
+    @Override
+    public float speed() {
+        return 0;
+    }
+
+    @Override
+    public Bitmap spritePlayer() {
+        return null;
+    }
+
+    @Override
+    public boolean canColine() {
+        return false;
+    }
+
 }

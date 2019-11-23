@@ -1,13 +1,15 @@
 package co.devbeerloper.myicecreamgame;
 
+import android.graphics.Bitmap;
+
 public class EnemyShip implements Sprite {
     @Override
-    public float positionY() {
+    public float positionX() {
         return 0;
     }
 
     @Override
-    public float positionX() {
+    public float positionY() {
         return 0;
     }
 
@@ -20,5 +22,21 @@ public class EnemyShip implements Sprite {
     public int spriteSizeWidth() {
         return 0;
     }
+
+    @Override
+    public float speed() {
+        return 0;
+    }
+
+    @Override
+    public Bitmap spritePlayer() {
+        return null;
+    }
+
+    @Override
+    public boolean canColine() {
+        return false;
+    }
+
 
 }
