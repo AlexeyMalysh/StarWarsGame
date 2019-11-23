@@ -34,7 +34,7 @@ public class Asteroid implements Sprite {
     }
 
     @Override
-    public boolean canColine() {
+    public boolean canCollide() {
         return false;
     }
 

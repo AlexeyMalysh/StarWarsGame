@@ -10,5 +10,5 @@ public interface Sprite {
     float positionY();
     float speed();
     Bitmap spritePlayer();
-    boolean canColine();
+    boolean canCollide();
 }

@@ -34,7 +34,7 @@ public class Bullet implements Sprite {
     }
 
     @Override
-    public boolean canColine() {
+    public boolean canCollide() {
         return false;
     }
 

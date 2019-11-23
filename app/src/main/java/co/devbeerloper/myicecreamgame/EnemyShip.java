@@ -34,7 +34,7 @@ public class EnemyShip implements Sprite {
     }
 
     @Override
-    public boolean canColine() {
+    public boolean canCollide() {
         return false;
     }
 
