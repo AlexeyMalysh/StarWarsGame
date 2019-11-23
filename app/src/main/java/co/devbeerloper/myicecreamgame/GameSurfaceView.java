@@ -13,21 +13,28 @@ import java.util.Random;
 
 public class GameSurfaceView extends SurfaceView implements Runnable {
 
+    private Context context;
+    private SurfaceHolder holder;
+    private Canvas canvas;
+    private Paint paint;
+    private float screenWidth;
+    private float screenHeight;
+
+    Random random = new Random();
+
     private boolean isPlaying;
     private boolean isGaming;
-    private IceCreamCar icecreamCar;
+    private int playerSpeed;
+
+    private Player player;
     private ArrayList<Cloud> clouds;
+
+
+    private IceCreamCar icecreamCar;
     private ArrayList<Kid> kids;
     private ArrayList<Adult> adults;
     private ArrayList<PowerUp> powerUps;
-    private Paint paint;
-    private Canvas canvas;
-    private Context context;
-    private float screenWidth;
-    private float screenHeight;
-    private SurfaceHolder holder;
     private Thread gameplayThread = null;
-    Random random = new Random();
     private int score;
     private int lifes;
     private int nexTop;
@@ -43,6 +50,10 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
         this.context = context;
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
+
+        player = new Player(context, screenWidth, screenHeight);
+        playerSpeed = 7;
+
 
         icecreamCar = new IceCreamCar(context, screenWidth, screenHeight);
         clouds = new ArrayList<Cloud>();
@@ -74,16 +85,19 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
     }
 
     private void updateBackGround() {
-        if (random.nextInt(100) < 20)
-            clouds.add(new Cloud(context, screenWidth, screenHeight));
+        if (random.nextInt(100) < 20 || (isGaming && random.nextInt(100) < 70))
+            clouds.add(new Cloud(context, screenWidth, screenHeight, isGaming));
         for (Cloud c : clouds)
-            c.updateInfo();
+            c.updateInfo(isGaming);
         for (int i = 0; i < clouds.size(); i++)
-            if (clouds.get(i).getPositionX() < -clouds.get(i).SPRITE_SIZE_WIDTH)
+            if (clouds.get(i).positionY() > screenHeight+clouds.get(i).spriteSizeHeigth())
                 clouds.remove(i--);
     }
 
     private void updateInfo() {
+        player.updateInfo();
+
+
 
         if (random.nextInt(1000) < 1 && powerUps.isEmpty())
             powerUps.add(new PowerUp(context, screenWidth, screenHeight));
@@ -153,9 +167,8 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
         if (holder.getSurface().isValid()) {
             canvas = holder.lockCanvas();
             canvas.drawColor(Color.BLACK);
-            for (Cloud c : clouds) {
-                canvas.drawBitmap(c.getSpriteCloud(), c.getPositionX(), c.getPositionY(), paint);
-            }
+
+            /*
             for (Kid k : kids) {
                 canvas.drawBitmap(k.getSpriteKid(), k.getPositionX(), k.getPositionY(), paint);
             }
@@ -166,6 +179,13 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
                 canvas.drawBitmap(p.getSpriteKid(), p.getPositionX(), p.getPositionY(), paint);
             }
             canvas.drawBitmap(icecreamCar.getSpriteIcecreamCar(), icecreamCar.getPositionX(), icecreamCar.getPositionY(), paint);
+            */
+
+
+
+            for (Cloud c : clouds)
+                canvas.drawBitmap(c.spriteImage(), c.positionX(), c.positionY(), paint);
+            canvas.drawBitmap(player.spriteImage(), player.positionX(), player.positionY(), paint);
             canvas.drawText("Score: " + score, screenWidth / 100 * 10, 100, paint);
             canvas.drawText("Lifes: " + lifes, screenWidth / 100 * 50, 100, paint);
             holder.unlockCanvasAndPost(canvas);
@@ -210,6 +230,15 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
                 icecreamCar.setJumping(true);
                 break;
         }
+
+        isGaming = true;
+        float xValue = motionEvent.getX();
+        if (xValue <= screenWidth / 2){
+            player.setSpeed(-playerSpeed);}
+        else
+            player.setSpeed(playerSpeed);
+
+
         return true;
     }
 

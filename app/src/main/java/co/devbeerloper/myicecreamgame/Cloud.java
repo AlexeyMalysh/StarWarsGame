@@ -6,37 +6,32 @@ import android.graphics.BitmapFactory;
 
 import java.util.Random;
 
-public class Cloud {
+public class Cloud implements Sprite {
 
-    public static int SPRITE_SIZE_WIDTH;
-    public static int SPRITE_SIZE_HEIGTH;
+    public static int initSizeWidth;
+    public static int initSizeHeight;
 
     private float speed = 0;
     private float positionX;
     private float positionY;
-    private Bitmap spriteCloud;
+    private Bitmap spriteImage;
     Random random = new Random();
 
 
-    public Cloud(Context context, float screenWidth, float screenHeigth) {
-        SPRITE_SIZE_HEIGTH = SPRITE_SIZE_WIDTH = (random.nextInt(3) + 1) * 10;
-        speed = random.nextInt(3) + 3;
-        positionX = screenWidth;
-        positionY = random.nextInt((int) screenHeigth - SPRITE_SIZE_HEIGTH);
+    public Cloud(Context context, float screenWidth, float screenHeigth, boolean isPlaying) {
+        initSizeHeight = initSizeWidth = (random.nextInt(3) + 1) * (int) (screenWidth / 100);
+        if (isPlaying)
+            speed = random.nextInt(3) * 4 + 10;
+        else
+            speed = random.nextInt(3) + 1;
+
+        positionY = -initSizeHeight;
+        positionX = random.nextInt((int) screenWidth - initSizeWidth);
         //Getting bitmap from resource
         Bitmap originalBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.cloud);
-        spriteCloud = Bitmap.createScaledBitmap(originalBitmap, SPRITE_SIZE_WIDTH, SPRITE_SIZE_HEIGTH, false);
+        spriteImage = Bitmap.createScaledBitmap(originalBitmap, initSizeWidth, initSizeHeight, false);
 
 
-    }
-
-
-    public static int getSpriteSizeWidth() {
-        return SPRITE_SIZE_WIDTH;
-    }
-
-    public static int getSpriteSizeHeigth() {
-        return SPRITE_SIZE_HEIGTH;
     }
 
     public float getSpeed() {
@@ -47,37 +42,49 @@ public class Cloud {
         this.speed = speed;
     }
 
-    public float getPositionX() {
+    public void setSpriteCloud(Bitmap spriteIcecreamCar) {
+        this.spriteImage = spriteIcecreamCar;
+    }
+
+    public void updateInfo(boolean isPlaying) {
+        if (isPlaying && speed < 10)
+            speed = random.nextInt(3) * 4 + 10;
+        this.positionY += speed;
+    }
+
+
+    @Override
+    public int spriteSizeWidth() {
+        return spriteImage.getWidth();
+    }
+
+    @Override
+    public int spriteSizeHeigth() {
+        return spriteImage.getHeight();
+    }
+
+    @Override
+    public float positionX() {
         return positionX;
     }
 
-    public void setPositionX(float positionX) {
-        this.positionX = positionX;
-    }
-
-    public float getPositionY() {
+    @Override
+    public float positionY() {
         return positionY;
     }
 
-    public void setPositionY(float positionY) {
-        this.positionY = positionY;
+    @Override
+    public float speed() {
+        return speed;
     }
 
-    public Bitmap getSpriteCloud() {
-        return spriteCloud;
+    @Override
+    public Bitmap spriteImage() {
+        return spriteImage;
     }
 
-    public void setSpriteCloud(Bitmap spriteIcecreamCar) {
-        this.spriteCloud = spriteIcecreamCar;
+    @Override
+    public boolean canCollide() {
+        return false;
     }
-
-
-    /**
-     * Control the position and behaviour of the icecream car
-     */
-    public void updateInfo() {
-        this.positionX -= speed;
-    }
-
-
 }

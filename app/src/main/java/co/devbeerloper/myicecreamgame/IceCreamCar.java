@@ -32,7 +32,7 @@ public class IceCreamCar {
 
         isJumping = false;
         //Getting bitmap from resource
-        Bitmap originalBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.xwing);
+        Bitmap originalBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.pacman);
         spriteIcecreamCar = Bitmap.createScaledBitmap(originalBitmap, SPRITE_SIZE_WIDTH, SPRITE_SIZE_HEIGTH, false);
 
 

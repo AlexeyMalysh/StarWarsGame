@@ -29,7 +29,7 @@ public class Asteroid implements Sprite {
     }
 
     @Override
-    public Bitmap spritePlayer() {
+    public Bitmap spriteImage() {
         return null;
     }
 

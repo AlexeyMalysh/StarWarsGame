@@ -16,7 +16,6 @@ public class GamePlay extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_play);
         // Force the screen to use the landscape orintation
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         Display display = getWindowManager().getDefaultDisplay();
         Point screenSize = new Point();
         display.getRealSize(screenSize);

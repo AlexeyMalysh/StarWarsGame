@@ -29,7 +29,7 @@ public class EnemyShip implements Sprite {
     }
 
     @Override
-    public Bitmap spritePlayer() {
+    public Bitmap spriteImage() {
         return null;
     }
 

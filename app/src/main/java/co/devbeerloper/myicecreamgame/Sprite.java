@@ -9,6 +9,6 @@ public interface Sprite {
     float positionX();
     float positionY();
     float speed();
-    Bitmap spritePlayer();
+    Bitmap spriteImage();
     boolean canCollide();
 }

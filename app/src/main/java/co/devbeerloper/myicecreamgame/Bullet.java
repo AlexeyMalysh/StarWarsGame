@@ -29,7 +29,7 @@ public class Bullet implements Sprite {
     }
 
     @Override
-    public Bitmap spritePlayer() {
+    public Bitmap spriteImage() {
         return null;
     }
 
