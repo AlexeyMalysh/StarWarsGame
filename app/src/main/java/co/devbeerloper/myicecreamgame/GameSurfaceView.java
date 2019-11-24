@@ -1,6 +1,8 @@
 package co.devbeerloper.myicecreamgame;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -27,6 +29,7 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
     MediaPlayer backgroundMusic;
     SoundPool sp;
     int soundIds[];
+    int musicIds[];
 
     Random random = new Random();
     int frameCount;
@@ -46,6 +49,7 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
     private ArrayList<Asteroid> asteroids;
     private ArrayList<Cloud> clouds;
 
+    private Bitmap gameOver;
     private Thread gameplayThread = null;
     private int highscore;
     private int score;
@@ -61,7 +65,8 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
     public GameSurfaceView(Context context, float screenWidth, float screenHeight) {
         super(context);
 
-
+        Bitmap originalBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.gameover);
+        gameOver = Bitmap.createScaledBitmap(originalBitmap, (int) (screenWidth * 3 / 100) * 30, (int) (screenHeight * 3 / 100) * 8, false);
         highscore = PreferenceManager.getDefaultSharedPreferences(context).getInt("HIGH SCORE", 0);
         this.context = context;
         this.screenWidth = screenWidth;
@@ -76,12 +81,12 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
         lifes = 3;
         nexTop = 30;
 
-        backgroundMusic = MediaPlayer.create(context, R.raw.music1);
-        backgroundMusic.setLooping(true);
-        backgroundMusic.setVolume(10.0f, 3.0f);
-        backgroundMusic.start();
         sp = new SoundPool(10, AudioManager.STREAM_MUSIC, 0);
         fillSounds();
+        backgroundMusic = MediaPlayer.create(context, musicIds[random.nextInt(2)]);
+        backgroundMusic.setLooping(true);
+        backgroundMusic.setVolume(1f, 1f);
+        backgroundMusic.start();
 
 
         player = new Player(context, screenWidth, screenHeight);
@@ -122,6 +127,14 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
         soundIds[13] = sp.load(context, R.raw.exp3, 1);
         soundIds[14] = sp.load(context, R.raw.exp2, 1);
 
+        soundIds[15] = sp.load(context, R.raw.xwing_fire, 1);
+
+
+        musicIds = new int[2];
+
+        musicIds[0] = R.raw.music1;
+        musicIds[1] = R.raw.music2;
+
     }
 
     /**
@@ -142,10 +155,6 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
                 else if (isGaming)
                     updateInfo();
                 paintFrame();
-            }
-            if (score > highscore) {
-                highscore = score;
-                PreferenceManager.getDefaultSharedPreferences(context).edit().putInt("HIGH SCORE", highscore).apply();
             }
 
         }
@@ -198,10 +207,14 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
             pb.setSpeed(speed);
             pb.updateInfo(actualTime);
         }
-        if (frameCount % 50 == 0 && !isDead)
+        if (frameCount % 50 == 0 && !isDead) {
+            sp.play(soundIds[15], 0.12f, 0.05f, 1, 0, 1.0f);
             playerBullets.add(new Bullet(context, screenWidth, screenHeight, player.positionX(), player.positionY(), true));
-        if (frameCount % 50 == 25 && !isDead)
+        }
+        if (frameCount % 50 == 25 && !isDead) {
+            sp.play(soundIds[15], 0.05f, 0.12f, 1, 0, 1.0f);
             playerBullets.add(new Bullet(context, screenWidth, screenHeight, player.positionX() + player.spriteSizeWidth() - (screenWidth * 2 / 1000 * 6), player.positionY(), true));
+        }
         for (int i = 0; i < playerBullets.size(); i++) {
             if (playerBullets.get(i).positionY() < -playerBullets.get(i).spriteSizeHeigth())
                 playerBullets.remove(i--);
@@ -229,9 +242,9 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
         if (random.nextInt(1000) < 7 || frameCount % 150 == 0) {
             EnemyShip e = new EnemyShip(context, screenWidth, screenHeight);
             enemyShips.add(e);
-            if (e.positionX() + e.spriteSizeWidth() / 2 < screenWidth / 2 && actualTime%2==0)
+            if (e.positionX() + e.spriteSizeWidth() / 2 < screenWidth / 2 && actualTime % 2 == 0)
                 sp.play(soundIds[random.nextInt(4) + 1], 0.3f, 0.2f, 0, 0, 1.0f);
-            else if (actualTime%2==0)
+            else if (actualTime % 2 == 0)
                 sp.play(soundIds[random.nextInt(4) + 1], 0.1f, 0.3f, 0, 0, 1.0f);
         }
         for (EnemyShip e : enemyShips) {
@@ -249,7 +262,7 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
                     sp.play(soundIds[random.nextInt(3) + 12], 0.4f, 0.2f, 1, 0, 1.0f);
                 else
                     sp.play(soundIds[random.nextInt(3) + 12], 0.2f, 0.4f, 1, 0, 1.0f);
-                sp.play(soundIds[random.nextInt(3)]+8, 0.7f, 0.7f, 1, 0, 1.0f);
+                sp.play(soundIds[random.nextInt(3)] + 8, 0.7f, 0.7f, 1, 0, 1.0f);
             }
 
         if (random.nextInt(1000) < 10 || frameCount % 120 == 0)
@@ -270,7 +283,7 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
                 else
                     sp.play(soundIds[random.nextInt(3) + 12], 0.2f, 0.4f, 1, 0, 1.0f);
 
-                sp.play(soundIds[random.nextInt(3)]+8, 0.7f, 0.7f, 1, 0, 1.0f);
+                sp.play(soundIds[random.nextInt(3)] + 8, 0.7f, 0.7f, 1, 0, 1.0f);
             }
 
         checkBulletsCollitions();
@@ -285,7 +298,11 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
         if (lifes < 1) {
             lifes = 0;
             sp.stop(soundIds[8]);
-            sp.play(soundIds[9], 0.7f, 0.7f, 1, 0, 1.0f);
+            sp.play(soundIds[11], 0.7f, 0.7f, 2, 0, 1.0f);
+            if (score > highscore) {
+                highscore = score;
+                PreferenceManager.getDefaultSharedPreferences(context).edit().putInt("HIGH SCORE", highscore).apply();
+            }
             player.disableCollide();
             isDead = true;
             isGaming = false;
@@ -328,7 +345,7 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
         for (int i = 0; i < enemyBullets.size(); i++) {
             if (collide(enemyBullets.get(i), player)) {
                 lifes--;
-                sp.play(soundIds[random.nextInt(3)]+8, 0.7f, 0.7f, 1, 0, 1.0f);
+                sp.play(soundIds[random.nextInt(3)] + 8, 0.7f, 0.7f, 1, 0, 1.0f);
                 enemyBullets.remove(i--);
             }
         }
@@ -365,8 +382,13 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
                 canvas.drawBitmap(pb.spriteImage(), pb.positionX(), pb.positionY(), paint);
             canvas.drawBitmap(player.spriteImage(), player.positionX(), player.positionY(), paint);
             canvas.drawText("Score: " + score, screenWidth / 100 * 5, screenWidth / 100 * 10, paint);
-            canvas.drawText("Lifes: " + lifes, screenWidth / 100 * 70, screenWidth / 100 * 10, paint);
             canvas.drawText("High Score: " + highscore, screenWidth / 100 * 30, screenWidth / 100 * 10, paint);
+            if (isDead)
+                canvas.drawBitmap(gameOver, screenWidth / 2 - gameOver.getWidth() / 2, screenHeight / 2 - gameOver.getHeight() / 2, paint);
+
+            if (isDead && highscore == score)
+                canvas.drawText("NEW HIGH SCORE!!", screenWidth / 100 * 50, screenWidth / 100 * 10, paint);
+            canvas.drawText("Lifes: " + lifes, screenWidth / 100 * 80, screenWidth / 100 * 10, paint);
             holder.unlockCanvasAndPost(canvas);
         }
 
@@ -386,6 +408,10 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
     }
 
     public void resume() {
+        backgroundMusic = MediaPlayer.create(context, musicIds[random.nextInt(2)]);
+        backgroundMusic.setLooping(true);
+        backgroundMusic.setVolume(1f, 1f);
+        backgroundMusic.start();
         isPlaying = true;
         gameplayThread = new Thread(this);
         gameplayThread.start();
