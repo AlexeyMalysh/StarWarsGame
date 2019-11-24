@@ -19,7 +19,8 @@ public class Player implements Sprite {
     private float speed = 0;
     private float positionX;
     private float positionY;
-    private Bitmap[] sprites ;
+    private Bitmap[] sprites;
+    private int actualSprite;
     Random random = new Random();
 
 
@@ -27,6 +28,7 @@ public class Player implements Sprite {
         initSizeWidth = initSizeHeight = (int) screenWidth * 15 / 100;
         speed = 0;
         sprites = new Bitmap[3];
+        actualSprite = 0;
 
         //Getting bitmap from resource
         Bitmap originalBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.xwing);
@@ -42,9 +44,14 @@ public class Player implements Sprite {
     }
 
 
-    public void updateInfo() {
+    public void updateInfo(long actualTime) {
         if (positionX + speed > 0 && positionX + speed < maxX)
             positionX += speed;
+        if (speed != 0)
+            if (actualTime % 200 < 100)
+                actualSprite = 1;
+            else
+                actualSprite = 2;
     }
 
     public void setSpeed(int speed) {
@@ -78,14 +85,7 @@ public class Player implements Sprite {
 
     @Override
     public Bitmap spriteImage() {
-
-        if(speed==0)
-            return sprites[0];
-        long time = System.currentTimeMillis()%200;
-        if(time<100)
-            return sprites[1];
-        else
-            return sprites[2];
+        return sprites[actualSprite];
     }
 
     @Override

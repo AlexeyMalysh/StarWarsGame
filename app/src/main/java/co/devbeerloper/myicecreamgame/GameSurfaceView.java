@@ -21,6 +21,7 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
     private float screenHeight;
 
     Random random = new Random();
+    int frameCount;
     long initTime;
     long actualTime;
 
@@ -29,6 +30,7 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
     private int playerSpeed;
 
     private Player player;
+    private ArrayList<Bullet> playerBullets;
     private ArrayList<Cloud> clouds;
 
 
@@ -53,18 +55,20 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
         initTime = System.currentTimeMillis();
+        frameCount = 0;
 
         player = new Player(context, screenWidth, screenHeight);
         playerSpeed = 7;
+        playerBullets = new ArrayList<Bullet>();
+        clouds = new ArrayList<Cloud>();
 
 
         icecreamCar = new IceCreamCar(context, screenWidth, screenHeight);
-        clouds = new ArrayList<Cloud>();
         kids = new ArrayList<Kid>();
         adults = new ArrayList<Adult>();
         powerUps = new ArrayList<PowerUp>();
         paint = new Paint();
-        paint.setTextSize(screenWidth*8/100);
+        paint.setTextSize(screenWidth * 8 / 100);
         paint.setColor(Color.WHITE);
         holder = getHolder();
         isPlaying = true;
@@ -80,6 +84,8 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
     @Override
     public void run() {
         while (isPlaying) {
+            frameCount++;
+            frameCount %= Integer.MAX_VALUE - 10000;
             actualTime = System.currentTimeMillis();
             updateBackGround();
             if (actualTime - initTime > 500) {
@@ -102,7 +108,18 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
     }
 
     private void updateInfo() {
-        player.updateInfo();
+        player.updateInfo(actualTime);
+
+        if (frameCount % 120 == 0)
+            playerBullets.add(new Bullet(context, screenWidth, screenHeight, player.positionX(), player.positionY(), true));
+        if (frameCount % 120 == 60)
+            playerBullets.add(new Bullet(context, screenWidth, screenHeight, player.positionX() + player.spriteSizeWidth() - (screenWidth * 2 / 1000 * 6), player.positionY(), true));
+        for (Bullet pb : playerBullets)
+            pb.updateInfo(actualTime);
+        for (int i = 0; i < playerBullets.size(); i++) {
+            if (playerBullets.get(i).positionY() < -playerBullets.get(i).spriteSizeHeigth())
+                playerBullets.remove(i--);
+        }
 
 
         if (random.nextInt(1000) < 1 && powerUps.isEmpty())
@@ -190,6 +207,8 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
 
             for (Cloud c : clouds)
                 canvas.drawBitmap(c.spriteImage(), c.positionX(), c.positionY(), paint);
+            for (Bullet pb : playerBullets)
+                canvas.drawBitmap(pb.spriteImage(), pb.positionX(), pb.positionY(), paint);
             canvas.drawBitmap(player.spriteImage(), player.positionX(), player.positionY(), paint);
             canvas.drawText("Score: " + score, screenWidth / 100 * 10, screenWidth / 100 * 10, paint);
             canvas.drawText("Lifes: " + lifes, screenWidth / 100 * 50, screenWidth / 100 * 10, paint);
