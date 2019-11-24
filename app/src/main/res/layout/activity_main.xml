@@ -11,14 +11,14 @@
         android:id="@+id/tvGameTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Pac-Man"
+        android:text="Star Wars"
         android:textAllCaps="true"
         android:textColor="@color/colorWhite"
         android:textSize="60sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@id/hor1"
-        app:layout_constraintStart_toEndOf="parent"
         app:layout_constraintEnd_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
 
@@ -79,14 +79,14 @@
 
     <ImageView
         android:id="@+id/player"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="76dp"
+        android:layout_height="84dp"
         android:scaleType="fitXY"
         app:layout_constraintBottom_toTopOf="@id/hor11"
-        app:layout_constraintStart_toEndOf="@id/ver1"
         app:layout_constraintEnd_toStartOf="@id/ver2"
+        app:layout_constraintStart_toEndOf="@id/ver1"
         app:layout_constraintTop_toBottomOf="@id/hor1"
-        app:srcCompat="@drawable/pacman" />
+        app:srcCompat="@drawable/xwing" />
 
     <ImageView
         android:id="@+id/edible1"
@@ -132,51 +132,18 @@
         app:layout_constraintTop_toBottomOf="@id/hor12"
         app:srcCompat="@drawable/gold" />
 
-    <ImageView
-        android:id="@+id/ghos1"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:scaleType="fitXY"
-        app:layout_constraintBottom_toTopOf="@id/hor2"
-        app:layout_constraintStart_toEndOf="@id/ver1"
-        app:layout_constraintEnd_toStartOf="@id/ghost2"
-        app:layout_constraintTop_toBottomOf="@id/hor13"
-        app:srcCompat="@drawable/ghost1" />
 
     <ImageView
-        android:id="@+id/ghost2"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:id="@+id/tiefighter"
+        android:layout_width="75dp"
+        android:layout_height="78dp"
         android:scaleType="fitXY"
         app:layout_constraintBottom_toTopOf="@id/hor2"
-        app:layout_constraintStart_toEndOf="@id/ghos1"
-        app:layout_constraintEnd_toStartOf="@id/ghost3"
+        app:layout_constraintEnd_toStartOf="@+id/ver2"
+        app:layout_constraintStart_toStartOf="@+id/ver1"
         app:layout_constraintTop_toBottomOf="@id/hor13"
-        app:srcCompat="@drawable/ghost2" />
-
-    <ImageView
-        android:id="@+id/ghost3"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:scaleType="fitXY"
-        app:layout_constraintBottom_toTopOf="@id/hor2"
-        app:layout_constraintStart_toEndOf="@id/ghost2"
-        app:layout_constraintEnd_toStartOf="@id/ghos4"
-        app:layout_constraintTop_toBottomOf="@id/hor13"
-        app:srcCompat="@drawable/ghost3" />
-
-    <ImageView
-        android:id="@+id/ghos4"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:scaleType="fitXY"
-        app:layout_constraintBottom_toTopOf="@id/hor2"
-        app:layout_constraintStart_toEndOf="@id/ghost3"
-        app:layout_constraintEnd_toStartOf="@id/ver2"
-        app:layout_constraintTop_toBottomOf="@id/hor13"
-        app:srcCompat="@drawable/ghost4" />
-
-
+        app:layout_constraintVertical_bias="0.575"
+        app:srcCompat="@drawable/tiefighter" />
 
     <Button
         android:id="@+id/btnPlayGame"
