@@ -24,7 +24,7 @@ public class Player implements Sprite {
 
 
     public Player(Context context, float screenWidth, float screenHeigth) {
-        initSizeWidth = initSizeHeight = (int) screenWidth * 30 / 100;
+        initSizeWidth = initSizeHeight = (int) screenWidth * 15 / 100;
         speed = 0;
         sprites = new Bitmap[3];
 
@@ -81,8 +81,8 @@ public class Player implements Sprite {
 
         if(speed==0)
             return sprites[0];
-        long time = System.currentTimeMillis()%100;
-        if(time>50)
+        long time = System.currentTimeMillis()%200;
+        if(time<100)
             return sprites[1];
         else
             return sprites[2];

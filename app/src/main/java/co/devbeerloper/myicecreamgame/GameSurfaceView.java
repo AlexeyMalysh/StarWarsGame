@@ -21,6 +21,8 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
     private float screenHeight;
 
     Random random = new Random();
+    long initTime;
+    long actualTime;
 
     private boolean isPlaying;
     private boolean isGaming;
@@ -50,6 +52,7 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
         this.context = context;
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
+        initTime = System.currentTimeMillis();
 
         player = new Player(context, screenWidth, screenHeight);
         playerSpeed = 7;
@@ -61,7 +64,7 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
         adults = new ArrayList<Adult>();
         powerUps = new ArrayList<PowerUp>();
         paint = new Paint();
-        paint.setTextSize(100);
+        paint.setTextSize(screenWidth*8/100);
         paint.setColor(Color.WHITE);
         holder = getHolder();
         isPlaying = true;
@@ -77,10 +80,14 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
     @Override
     public void run() {
         while (isPlaying) {
+            actualTime = System.currentTimeMillis();
             updateBackGround();
-            if (isGaming)
-                updateInfo();
-            paintFrame();
+            if (actualTime - initTime > 500) {
+                if (isGaming)
+                    updateInfo();
+                paintFrame();
+            }
+
         }
     }
 
@@ -90,13 +97,12 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
         for (Cloud c : clouds)
             c.updateInfo(isGaming);
         for (int i = 0; i < clouds.size(); i++)
-            if (clouds.get(i).positionY() > screenHeight+clouds.get(i).spriteSizeHeigth())
+            if (clouds.get(i).positionY() > screenHeight + clouds.get(i).spriteSizeHeigth())
                 clouds.remove(i--);
     }
 
     private void updateInfo() {
         player.updateInfo();
-
 
 
         if (random.nextInt(1000) < 1 && powerUps.isEmpty())
@@ -182,12 +188,11 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
             */
 
 
-
             for (Cloud c : clouds)
                 canvas.drawBitmap(c.spriteImage(), c.positionX(), c.positionY(), paint);
             canvas.drawBitmap(player.spriteImage(), player.positionX(), player.positionY(), paint);
-            canvas.drawText("Score: " + score, screenWidth / 100 * 10, 100, paint);
-            canvas.drawText("Lifes: " + lifes, screenWidth / 100 * 50, 100, paint);
+            canvas.drawText("Score: " + score, screenWidth / 100 * 10, screenWidth / 100 * 10, paint);
+            canvas.drawText("Lifes: " + lifes, screenWidth / 100 * 50, screenWidth / 100 * 10, paint);
             holder.unlockCanvasAndPost(canvas);
         }
 
@@ -233,9 +238,9 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
 
         isGaming = true;
         float xValue = motionEvent.getX();
-        if (xValue <= screenWidth / 2){
-            player.setSpeed(-playerSpeed);}
-        else
+        if (xValue <= screenWidth / 2) {
+            player.setSpeed(-playerSpeed);
+        } else
             player.setSpeed(playerSpeed);
 
 
