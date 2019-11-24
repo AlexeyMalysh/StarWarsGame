@@ -16,6 +16,7 @@ public class Player implements Sprite {
     private float maxY;
     private float maxX;
 
+    private boolean canCollide;
     private float speed = 0;
     private float positionX;
     private float positionY;
@@ -29,6 +30,7 @@ public class Player implements Sprite {
         speed = 0;
         sprites = new Bitmap[3];
         actualSprite = 0;
+        canCollide =true;
 
         //Getting bitmap from resource
         Bitmap originalBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.xwing);
@@ -90,6 +92,6 @@ public class Player implements Sprite {
 
     @Override
     public boolean canCollide() {
-        return true;
+        return canCollide;
     }
 }

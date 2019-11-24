@@ -31,6 +31,9 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
 
     private Player player;
     private ArrayList<Bullet> playerBullets;
+    private ArrayList<EnemyShip> enemyShips;
+    private ArrayList<Bullet> enemyBullets;
+    private ArrayList<Asteroid> asteroids;
     private ArrayList<Cloud> clouds;
 
 
@@ -60,6 +63,9 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
         player = new Player(context, screenWidth, screenHeight);
         playerSpeed = 7;
         playerBullets = new ArrayList<Bullet>();
+        enemyShips = new ArrayList<EnemyShip>();
+        enemyBullets = new ArrayList<Bullet>();
+        asteroids = new ArrayList<Asteroid>();
         clouds = new ArrayList<Cloud>();
 
 
@@ -108,19 +114,57 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
     }
 
     private void updateInfo() {
-        player.updateInfo(actualTime);
 
+        player.updateInfo(actualTime);
+        for (Bullet pb : playerBullets)
+            pb.updateInfo(actualTime);
         if (frameCount % 120 == 0)
             playerBullets.add(new Bullet(context, screenWidth, screenHeight, player.positionX(), player.positionY(), true));
         if (frameCount % 120 == 60)
             playerBullets.add(new Bullet(context, screenWidth, screenHeight, player.positionX() + player.spriteSizeWidth() - (screenWidth * 2 / 1000 * 6), player.positionY(), true));
-        for (Bullet pb : playerBullets)
-            pb.updateInfo(actualTime);
         for (int i = 0; i < playerBullets.size(); i++) {
             if (playerBullets.get(i).positionY() < -playerBullets.get(i).spriteSizeHeigth())
                 playerBullets.remove(i--);
         }
 
+
+        for (EnemyShip e : enemyShips) {
+            if (random.nextInt(100) < 1)
+                enemyBullets.add(new Bullet(context, screenWidth, screenHeight, e.positionX() + e.spriteSizeWidth() / 2, e.positionY() + e.spriteSizeHeigth(), false));
+        }
+        for (Bullet pb : enemyBullets)
+            pb.updateInfo(actualTime);
+        for (int i = 0; i < enemyBullets.size(); i++) {
+            if (enemyBullets.get(i).positionY() < -enemyBullets.get(i).spriteSizeHeigth())
+                enemyBullets.remove(i--);
+        }
+
+        if (random.nextInt(1000) < 7)
+            enemyShips.add(new EnemyShip(context, screenWidth, screenHeight));
+        for (EnemyShip e : enemyShips)
+            e.updateInfo();
+        for (int i = 0; i < enemyShips.size(); i++)
+            if (enemyShips.get(i).positionY() > screenHeight + enemyShips.get(i).spriteSizeHeigth()) {
+                enemyShips.remove(i--);
+            } else if (collide(player, enemyShips.get(i))) {
+                enemyShips.get(i).disableCollide();
+                score += 2;
+                lifes--;
+            }
+
+        if (random.nextInt(1000) < 10)
+            asteroids.add(new Asteroid(context, screenWidth, screenHeight));
+        for (Asteroid a : asteroids)
+            a.updateInfo();
+        for (int i = 0; i < asteroids.size(); i++)
+            if (asteroids.get(i).positionY() > screenHeight + asteroids.get(i).spriteSizeHeigth()) {
+                asteroids.remove(i--);
+            } else if (collide(player, asteroids.get(i))) {
+                asteroids.get(i).disableCollide();
+                lifes--;
+            }
+
+        checkBulletsCollitions();
 
         if (random.nextInt(1000) < 1 && powerUps.isEmpty())
             powerUps.add(new PowerUp(context, screenWidth, screenHeight));
@@ -129,44 +173,12 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
         for (int i = 0; i < powerUps.size(); i++)
             if (powerUps.get(i).getPositionX() < -powerUps.get(i).getSpriteSizeWidth())
                 powerUps.remove(i--);
-            else if (collitedWhithIceCreamCar(powerUps.get(i).getPositionX(), powerUps.get(i).getPositionY(), powerUps.get(i).getSpriteSizeWidth(), powerUps.get(i).getSpriteSizeHeigth())) {
+            else if (true) {
                 powerUps.remove(i--);
                 for (Adult a : adults)
                     a.setPowerUp(true);
             }
 
-        if (random.nextInt(100) < 2) {
-            Kid toAdd = new Kid(context, screenWidth, screenHeight);
-            kids.add(toAdd);
-        }
-        for (Kid k : kids)
-            k.updateInfo();
-        for (int i = 0; i < kids.size(); i++) {
-            if (kids.get(i).getPositionX() < -kids.get(i).spriteSizeWidth) {
-                kids.remove(i--);
-                score--;
-            } else if (collitedWhithIceCreamCar(kids.get(i).getPositionX(), kids.get(i).getPositionY(), kids.get(i).getSpriteSizeWidth(), kids.get(i).getSpriteSizeHeigth())) {
-                kids.remove(i--);
-                score += 2;
-            }
-        }
-
-        if (random.nextInt(100) < 1)
-            adults.add(new Adult(context, screenWidth, screenHeight));
-        for (Adult a : adults)
-            a.updateInfo();
-        for (int i = 0; i < adults.size(); i++) {
-            if (adults.get(i).getPositionX() < -adults.get(i).spriteSizeWidth)
-                adults.remove(i--);
-            else if (collitedWhithIceCreamCar(adults.get(i).getPositionX(), adults.get(i).getPositionY(), adults.get(i).spriteSizeWidth, adults.get(i).spriteSizeHeigth)) {
-                if (adults.get(i).isPowerUp()) {
-                    score++;
-                } else {
-                    lifes--;
-                }
-                adults.remove(i--);
-            }
-        }
 
         if (score >= nexTop) {
             lifes++;
@@ -176,10 +188,46 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
         icecreamCar.updateInfo();
     }
 
-    private boolean collitedWhithIceCreamCar(float x, float y, int xlen, int ylen) {
-        if (icecreamCar.getPositionX() > x + xlen || x > icecreamCar.getPositionX() + icecreamCar.SPRITE_SIZE_WIDTH) {
+    private void checkBulletsCollitions() {
+
+        loop:
+        for (int i = 0; i < playerBullets.size(); i++) {
+
+            for (int j = 0; j < enemyShips.size(); j++) {
+                if (collide(playerBullets.get(i), enemyShips.get(j))) {
+                    score++;
+                    enemyShips.get(j).disableCollide();
+                    playerBullets.remove(i--);
+                    continue loop;
+                }
+            }
+
+            for (int j = 0; j < asteroids.size(); j++) {
+                if (collide(playerBullets.get(i), asteroids.get(j))) {
+                    score++;
+                    asteroids.get(j).disableCollide();
+                    playerBullets.remove(i--);
+                    continue loop;
+                }
+            }
+        }
+
+        for (int i = 0; i < enemyBullets.size(); i++) {
+            if (collide(enemyBullets.get(i), player)) {
+                lifes--;
+                enemyBullets.remove(i--);
+            }
+        }
+
+
+    }
+
+    private boolean collide(Sprite a, Sprite b) {
+        if (!a.canCollide() || !b.canCollide())
             return false;
-        } else if (icecreamCar.getPositionY() > y + ylen || y > icecreamCar.getPositionY() + icecreamCar.SPRITE_SIZE_HEIGTH) {
+
+        if (a.positionX() > b.positionX() + b.spriteSizeWidth() || b.positionX() > a.positionX() + a.spriteSizeWidth() ||
+                a.positionY() > b.positionY() + b.spriteSizeHeigth() || b.positionY() > a.positionY() + a.spriteSizeHeigth()) {
             return false;
         }
         return true;
@@ -207,7 +255,13 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
 
             for (Cloud c : clouds)
                 canvas.drawBitmap(c.spriteImage(), c.positionX(), c.positionY(), paint);
+            for (Asteroid a : asteroids)
+                canvas.drawBitmap(a.spriteImage(), a.positionX(), a.positionY(), paint);
+            for (EnemyShip e : enemyShips)
+                canvas.drawBitmap(e.spriteImage(), e.positionX(), e.positionY(), paint);
             for (Bullet pb : playerBullets)
+                canvas.drawBitmap(pb.spriteImage(), pb.positionX(), pb.positionY(), paint);
+            for (Bullet pb : enemyBullets)
                 canvas.drawBitmap(pb.spriteImage(), pb.positionX(), pb.positionY(), paint);
             canvas.drawBitmap(player.spriteImage(), player.positionX(), player.positionY(), paint);
             canvas.drawText("Score: " + score, screenWidth / 100 * 10, screenWidth / 100 * 10, paint);
@@ -246,23 +300,17 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
         switch (motionEvent.getAction() & MotionEvent.ACTION_MASK) {
             case MotionEvent.ACTION_UP:
                 isGaming = true;
-                System.out.println("TOUCH UP - STOP JUMPING");
-                icecreamCar.setJumping(false);
+                player.setSpeed(0);
                 break;
             case MotionEvent.ACTION_DOWN:
-                System.out.println("TOUCH DOWN - JUMP");
-                icecreamCar.setJumping(true);
+                float xValue = motionEvent.getX();
+                if (xValue <= screenWidth / 2) {
+                    player.setSpeed(-playerSpeed);
+                } else
+                    player.setSpeed(playerSpeed);
+
                 break;
         }
-
-        isGaming = true;
-        float xValue = motionEvent.getX();
-        if (xValue <= screenWidth / 2) {
-            player.setSpeed(-playerSpeed);
-        } else
-            player.setSpeed(playerSpeed);
-
-
         return true;
     }
 

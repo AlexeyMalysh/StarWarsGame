@@ -11,7 +11,7 @@ public class Cloud implements Sprite {
     public static int initSizeWidth;
     public static int initSizeHeight;
 
-    private float speed = 0;
+    private float speed;
     private float positionX;
     private float positionY;
     private Bitmap spriteImage;
@@ -85,6 +85,6 @@ public class Cloud implements Sprite {
 
     @Override
     public boolean canCollide() {
-        return false;
+        return true;
     }
 }

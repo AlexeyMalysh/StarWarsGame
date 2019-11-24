@@ -26,7 +26,7 @@ public class Bullet implements Sprite {
     public Bullet(Context context, float screenWidth, float screenHeigth, float positionX, float positionY, boolean isPlayer) {
         initSizeWidth = (int) screenWidth * 2 / 1000 * 6;
         initSizeHeight = (int) screenWidth * 2 / 1000 * 30;
-        speed = -10;
+        speed = isPlayer?-10:10;
         sprites = new Bitmap[3];
         actualSprite = 0;
 
