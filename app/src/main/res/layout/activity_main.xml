@@ -4,22 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorBlack"
+    android:background="@drawable/background"
     tools:context=".MainActivity">
-
-    <TextView
-        android:id="@+id/tvGameTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Star Wars"
-        android:textAllCaps="true"
-        android:textColor="@color/colorWhite"
-        android:textSize="60sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@id/hor1"
-        app:layout_constraintEnd_toStartOf="parent"
-        app:layout_constraintStart_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
 
     <TextView
@@ -27,34 +13,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Player"
-        android:textColor="@color/colorWhite"
+        android:textColor="@color/colorYellow"
         android:textSize="30sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@id/hor11"
+        app:layout_constraintBottom_toTopOf="@+id/hor12"
         app:layout_constraintEnd_toStartOf="@id/ver3"
         app:layout_constraintStart_toEndOf="@id/ver2"
         app:layout_constraintTop_toBottomOf="@id/hor1" />
 
     <TextView
-        android:id="@+id/tv2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Edibles"
-        android:textColor="@color/colorWhite"
-        android:textSize="30sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@id/hor12"
-        app:layout_constraintStart_toEndOf="@id/ver2"
-        app:layout_constraintEnd_toStartOf="@id/ver3"
-        app:layout_constraintTop_toBottomOf="@id/hor11"
-        />
-
-    <TextView
         android:id="@+id/tv3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Power-Up"
-        android:textColor="@color/colorWhite"
+        android:text="Destroy"
+        android:textColor="@color/colorYellow"
         android:textSize="30sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@id/hor13"
@@ -67,8 +39,8 @@
         android:id="@+id/tv4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Enemies"
-        android:textColor="@color/colorWhite"
+        android:text="Enemie"
+        android:textColor="@color/colorYellow"
         android:textSize="30sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@id/hor13"
@@ -79,64 +51,31 @@
 
     <ImageView
         android:id="@+id/player"
-        android:layout_width="76dp"
+        android:layout_width="84dp"
         android:layout_height="84dp"
         android:scaleType="fitXY"
-        app:layout_constraintBottom_toTopOf="@id/hor11"
+        app:layout_constraintBottom_toTopOf="@+id/hor12"
         app:layout_constraintEnd_toStartOf="@id/ver2"
         app:layout_constraintStart_toEndOf="@id/ver1"
         app:layout_constraintTop_toBottomOf="@id/hor1"
         app:srcCompat="@drawable/xwing" />
 
     <ImageView
-        android:id="@+id/edible1"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:scaleType="fitXY"
-        app:layout_constraintBottom_toTopOf="@id/hor12"
-        app:layout_constraintStart_toEndOf="@id/ver1"
-        app:layout_constraintEnd_toStartOf="@id/edible2"
-        app:layout_constraintTop_toBottomOf="@id/hor11"
-        app:srcCompat="@drawable/cherry" />
-
-    <ImageView
-        android:id="@+id/edible2"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:scaleType="fitXY"
-        app:layout_constraintBottom_toTopOf="@id/hor12"
-        app:layout_constraintStart_toEndOf="@id/edible1"
-        app:layout_constraintEnd_toStartOf="@id/edible3"
-        app:layout_constraintTop_toBottomOf="@id/hor11"
-        app:srcCompat="@drawable/apple" />
-
-    <ImageView
-        android:id="@+id/edible3"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:scaleType="fitXY"
-        app:layout_constraintBottom_toTopOf="@id/hor12"
-        app:layout_constraintStart_toEndOf="@id/edible2"
-        app:layout_constraintEnd_toStartOf="@id/ver2"
-        app:layout_constraintTop_toBottomOf="@id/hor11"
-        app:srcCompat="@drawable/ghosty" />
-
-    <ImageView
         android:id="@+id/powerUp"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="71dp"
+        android:layout_height="71dp"
         android:scaleType="fitXY"
         app:layout_constraintBottom_toTopOf="@id/hor13"
-        app:layout_constraintStart_toEndOf="@id/ver1"
         app:layout_constraintEnd_toStartOf="@id/ver2"
+        app:layout_constraintStart_toEndOf="@id/ver1"
         app:layout_constraintTop_toBottomOf="@id/hor12"
-        app:srcCompat="@drawable/gold" />
+        app:srcCompat="@drawable/asteroid" />
 
 
     <ImageView
         android:id="@+id/tiefighter"
-        android:layout_width="75dp"
-        android:layout_height="78dp"
+        android:layout_width="82dp"
+        android:layout_height="82dp"
         android:scaleType="fitXY"
         app:layout_constraintBottom_toTopOf="@id/hor2"
         app:layout_constraintEnd_toStartOf="@+id/ver2"
@@ -167,14 +106,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.1" />
-
-    <android.support.constraint.Guideline
-        android:id="@+id/hor11"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.3" />
+        app:layout_constraintGuide_percent="0.24" />
 
     <android.support.constraint.Guideline
         android:id="@+id/hor12"
@@ -217,5 +149,15 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.8" />
+
+    <ImageView
+        android:id="@+id/starwars"
+        android:layout_width="186dp"
+        android:layout_height="155dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toStartOf="@+id/ver3"
+        app:layout_constraintStart_toStartOf="@+id/ver1"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/starwars" />
 
 </android.support.constraint.ConstraintLayout>
