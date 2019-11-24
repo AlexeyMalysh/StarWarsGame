@@ -28,7 +28,7 @@ public class EnemyShip implements Sprite {    public static final float INIT_X =
         initSizeWidth = initSizeHeight = (int) screenWidth * 15 / 100;
         speed = (random.nextInt(3) + 1) * 3;
         speedbase = speed;
-        sprites = new Bitmap[3];
+        sprites = new Bitmap[6];
         actualSprite = 0;
         canCollide =true;
 
@@ -38,8 +38,14 @@ public class EnemyShip implements Sprite {    public static final float INIT_X =
         sprites[0] = Bitmap.createScaledBitmap(originalBitmap, initSizeWidth, initSizeHeight, false);
         Bitmap kaboom1Bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.kaboom1);
         sprites[1] = Bitmap.createScaledBitmap(kaboom1Bitmap, initSizeWidth, initSizeHeight, false);
+        Bitmap kaboom2Bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.kaboom2);
+        sprites[2] = Bitmap.createScaledBitmap(kaboom2Bitmap, initSizeWidth, initSizeHeight, false);
+        Bitmap kaboom3Bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.kaboom3);
+        sprites[3] = Bitmap.createScaledBitmap(kaboom3Bitmap, initSizeWidth, initSizeHeight, false);
+        Bitmap kaboom4Bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.kaboom4);
+        sprites[4] = Bitmap.createScaledBitmap(kaboom4Bitmap, initSizeWidth, initSizeHeight, false);
         Bitmap blankBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.blank);
-        sprites[2] = Bitmap.createScaledBitmap(blankBitmap, initSizeWidth, initSizeHeight, false);
+        sprites[5] = Bitmap.createScaledBitmap(blankBitmap, initSizeWidth, initSizeHeight, false);
 
         positionX = random.nextInt((int) screenWidth - initSizeWidth);
         positionY = -initSizeHeight;

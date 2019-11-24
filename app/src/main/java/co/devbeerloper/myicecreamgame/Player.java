@@ -28,7 +28,7 @@ public class Player implements Sprite {
     public Player(Context context, float screenWidth, float screenHeigth) {
         initSizeWidth = initSizeHeight = (int) screenWidth * 15 / 100;
         speed = 0;
-        sprites = new Bitmap[5];
+        sprites = new Bitmap[8];
         actualSprite = 0;
         canCollide =true;
 
@@ -41,8 +41,14 @@ public class Player implements Sprite {
         sprites[2] = Bitmap.createScaledBitmap(rightBitmap, initSizeWidth, initSizeHeight, false);
         Bitmap kaboom1Bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.kaboom1);
         sprites[3] = Bitmap.createScaledBitmap(kaboom1Bitmap, initSizeWidth, initSizeHeight, false);
+        Bitmap kaboom2Bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.kaboom2);
+        sprites[4] = Bitmap.createScaledBitmap(kaboom2Bitmap, initSizeWidth, initSizeHeight, false);
+        Bitmap kaboom3Bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.kaboom3);
+        sprites[5] = Bitmap.createScaledBitmap(kaboom3Bitmap, initSizeWidth, initSizeHeight, false);
+        Bitmap kaboom4Bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.kaboom4);
+        sprites[6] = Bitmap.createScaledBitmap(kaboom4Bitmap, initSizeWidth, initSizeHeight, false);
         Bitmap blankBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.blank);
-        sprites[4] = Bitmap.createScaledBitmap(blankBitmap, initSizeWidth, initSizeHeight, false);
+        sprites[7] = Bitmap.createScaledBitmap(blankBitmap, initSizeWidth, initSizeHeight, false);
 
         positionX = screenWidth / 2 - sprites[0].getWidth() / 2;
         positionY = screenHeigth * 90 / 100 - sprites[0].getHeight();
