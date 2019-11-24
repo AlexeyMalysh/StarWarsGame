@@ -1,4 +1,4 @@
-package co.devbeerloper.myicecreamgame;
+package co.devbeerloper.mystarwarsgame;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -6,10 +6,10 @@ import android.graphics.BitmapFactory;
 
 import java.util.Random;
 
-public class EnemyShip implements Sprite {    public static final float INIT_X = 100;
-    private final float INIT_Y = 100;
-    private int initSizeWidth = 150;
-    private int initSizeHeight = 150;
+public class Asteroid implements Sprite {
+
+    public static int initSizeWidth;
+    public static int initSizeHeight;
 
     private float maxY;
     private float maxX;
@@ -24,17 +24,15 @@ public class EnemyShip implements Sprite {    public static final float INIT_X =
     Random random = new Random();
 
 
-    public EnemyShip(Context context, float screenWidth, float screenHeigth) {
-        initSizeWidth = initSizeHeight = (int) screenWidth * 15 / 100;
-        speed = (random.nextInt(3) + 1) * 3;
+    public Asteroid(Context context, float screenWidth, float screenHeigth) {
+        initSizeHeight = initSizeWidth = (random.nextInt(3) + 3) * (int) (screenWidth * 5 / 100);
+        speed = (random.nextInt(3) + 1) * 4;
         speedbase = speed;
         sprites = new Bitmap[6];
-        actualSprite = 0;
-        canCollide =true;
-
+        canCollide = true;
 
         //Getting bitmap from resource
-        Bitmap originalBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.tiefighter);
+        Bitmap originalBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.asteroid);
         sprites[0] = Bitmap.createScaledBitmap(originalBitmap, initSizeWidth, initSizeHeight, false);
         Bitmap kaboom1Bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.kaboom1);
         sprites[1] = Bitmap.createScaledBitmap(kaboom1Bitmap, initSizeWidth, initSizeHeight, false);
@@ -52,15 +50,14 @@ public class EnemyShip implements Sprite {    public static final float INIT_X =
         this.maxY = screenHeigth;
     }
 
-
     public void updateInfo() {
 
-            positionY += speed;
-        if(!canCollide){
+        positionY += speed;
+        if (!canCollide) {
             actualSprite++;
         }
-        if(actualSprite>=sprites.length) {
-            positionY += maxY + speed + spriteSizeHeigth();
+        if (actualSprite >= sprites.length) {
+            positionY += maxY + speed + initSizeHeight;
             actualSprite--;
             return;
         }
@@ -108,6 +105,5 @@ public class EnemyShip implements Sprite {    public static final float INIT_X =
     public boolean canCollide() {
         return canCollide;
     }
-
 
 }

@@ -1,4 +1,4 @@
-package co.devbeerloper.myicecreamgame;
+package co.devbeerloper.mystarwarsgame;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -408,6 +408,7 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
     }
 
     public void resume() {
+        backgroundMusic.release();
         backgroundMusic = MediaPlayer.create(context, musicIds[random.nextInt(2)]);
         backgroundMusic.setLooping(true);
         backgroundMusic.setVolume(1f, 1f);

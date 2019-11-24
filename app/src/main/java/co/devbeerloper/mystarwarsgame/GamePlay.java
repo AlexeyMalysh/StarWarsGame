@@ -1,12 +1,10 @@
-package co.devbeerloper.myicecreamgame;
+package co.devbeerloper.mystarwarsgame;
 
-import android.content.pm.ActivityInfo;
 import android.graphics.Point;
 import android.media.AudioManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Display;
-import android.view.MotionEvent;
 
 public class GamePlay extends AppCompatActivity {
 

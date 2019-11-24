@@ -1,4 +1,4 @@
-package co.devbeerloper.myicecreamgame;
+package co.devbeerloper.mystarwarsgame;
 
 import android.content.Context;
 import android.graphics.Bitmap;
