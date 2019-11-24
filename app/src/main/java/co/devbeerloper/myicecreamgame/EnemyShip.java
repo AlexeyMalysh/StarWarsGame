@@ -15,7 +15,8 @@ public class EnemyShip implements Sprite {    public static final float INIT_X =
     private float maxX;
 
     private boolean canCollide;
-    private float speed = 0;
+    private float speed;
+    private float speedbase;
     private float positionX;
     private float positionY;
     private Bitmap[] sprites;
@@ -26,16 +27,19 @@ public class EnemyShip implements Sprite {    public static final float INIT_X =
     public EnemyShip(Context context, float screenWidth, float screenHeigth) {
         initSizeWidth = initSizeHeight = (int) screenWidth * 15 / 100;
         speed = (random.nextInt(3) + 1) * 3;
-
-        sprites = new Bitmap[2];
+        speedbase = speed;
+        sprites = new Bitmap[3];
         actualSprite = 0;
         canCollide =true;
+
 
         //Getting bitmap from resource
         Bitmap originalBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.tiefighter);
         sprites[0] = Bitmap.createScaledBitmap(originalBitmap, initSizeWidth, initSizeHeight, false);
         Bitmap kaboom1Bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.kaboom1);
         sprites[1] = Bitmap.createScaledBitmap(kaboom1Bitmap, initSizeWidth, initSizeHeight, false);
+        Bitmap blankBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.blank);
+        sprites[2] = Bitmap.createScaledBitmap(blankBitmap, initSizeWidth, initSizeHeight, false);
 
         positionX = random.nextInt((int) screenWidth - initSizeWidth);
         positionY = -initSizeHeight;
@@ -50,14 +54,14 @@ public class EnemyShip implements Sprite {    public static final float INIT_X =
             actualSprite++;
         }
         if(actualSprite>=sprites.length) {
-            positionY += maxY + speed;
+            positionY += maxY + speed + spriteSizeHeigth();
             actualSprite--;
             return;
         }
     }
 
-    public void setSpeed(int speed) {
-        this.speed = speed;
+    public void setSpeed(float speed) {
+        this.speed = speed + speedbase;
     }
 
     public void disableCollide() {

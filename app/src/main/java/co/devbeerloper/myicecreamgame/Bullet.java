@@ -15,7 +15,8 @@ public class Bullet implements Sprite {
     private float maxY;
     private float maxX;
 
-    private float speed = 0;
+    private float speed;
+    private float speedbase;
     private float positionX;
     private float positionY;
     private Bitmap[] sprites;
@@ -27,6 +28,7 @@ public class Bullet implements Sprite {
         initSizeWidth = (int) screenWidth * 2 / 1000 * 6;
         initSizeHeight = (int) screenWidth * 2 / 1000 * 30;
         speed = isPlayer?-10:10;
+        speedbase = speed;
         sprites = new Bitmap[3];
         actualSprite = 0;
 
@@ -54,8 +56,8 @@ public class Bullet implements Sprite {
             actualSprite = 2;
     }
 
-    public void setSpeed(int speed) {
-        this.speed = speed;
+    public void setSpeed(float speed) {
+        this.speed = speedbase<0? -speed + speedbase:speed + speedbase;
     }
 
     @Override

@@ -12,6 +12,7 @@ public class Cloud implements Sprite {
     public static int initSizeHeight;
 
     private float speed;
+    private float speedbase;
     private float positionX;
     private float positionY;
     private Bitmap spriteImage;
@@ -21,10 +22,11 @@ public class Cloud implements Sprite {
     public Cloud(Context context, float screenWidth, float screenHeigth, boolean isPlaying) {
         initSizeHeight = initSizeWidth = (random.nextInt(3) + 1) * (int) (screenWidth / 100);
         if (isPlaying)
-            speed = random.nextInt(3) * 4 + 10;
+            speedbase = random.nextInt(3) * 3 + 2;
         else
-            speed = random.nextInt(3) + 1;
+            speedbase = random.nextInt(3) + 1;
 
+        speed = speedbase;
         positionY = -initSizeHeight;
         positionX = random.nextInt((int) screenWidth - initSizeWidth);
         //Getting bitmap from resource
@@ -39,7 +41,7 @@ public class Cloud implements Sprite {
     }
 
     public void setSpeed(float speed) {
-        this.speed = speed;
+        this.speed = speed + speedbase;
     }
 
     public void setSpriteCloud(Bitmap spriteIcecreamCar) {
@@ -47,8 +49,8 @@ public class Cloud implements Sprite {
     }
 
     public void updateInfo(boolean isPlaying) {
-        if (isPlaying && speed < 10)
-            speed = random.nextInt(3) * 4 + 10;
+        if (isPlaying && speed < 4)
+            speedbase = random.nextInt(3) * 3 + 2;
         this.positionY += speed;
     }
 

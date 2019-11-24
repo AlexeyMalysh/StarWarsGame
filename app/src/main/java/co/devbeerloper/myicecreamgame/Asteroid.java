@@ -16,6 +16,7 @@ public class Asteroid implements Sprite {
 
     private boolean canCollide;
     private float speed;
+    private float speedbase;
     private float positionX;
     private float positionY;
     private Bitmap[] sprites;
@@ -26,8 +27,8 @@ public class Asteroid implements Sprite {
     public Asteroid(Context context, float screenWidth, float screenHeigth) {
         initSizeHeight = initSizeWidth = (random.nextInt(3) + 3) * (int) (screenWidth * 5 / 100);
         speed = (random.nextInt(3) + 1) * 4;
-
-        sprites = new Bitmap[2];
+        speedbase = speed;
+        sprites = new Bitmap[3];
         canCollide = true;
 
         //Getting bitmap from resource
@@ -35,6 +36,8 @@ public class Asteroid implements Sprite {
         sprites[0] = Bitmap.createScaledBitmap(originalBitmap, initSizeWidth, initSizeHeight, false);
         Bitmap kaboom1Bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.kaboom1);
         sprites[1] = Bitmap.createScaledBitmap(kaboom1Bitmap, initSizeWidth, initSizeHeight, false);
+        Bitmap blankBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.blank);
+        sprites[2] = Bitmap.createScaledBitmap(blankBitmap, initSizeWidth, initSizeHeight, false);
 
         positionX = random.nextInt((int) screenWidth - initSizeWidth);
         positionY = -initSizeHeight;
@@ -48,10 +51,14 @@ public class Asteroid implements Sprite {
             actualSprite++;
         }
         if (actualSprite >= sprites.length) {
-            positionY += maxY + speed;
+            positionY += maxY + speed + initSizeHeight;
             actualSprite--;
             return;
         }
+    }
+
+    public void setSpeed(float speed) {
+        this.speed = speed + speedbase;
     }
 
     public void disableCollide() {
