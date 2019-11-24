@@ -4,6 +4,9 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.media.SoundPool;
 import android.preference.PreferenceManager;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -20,6 +23,10 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
     private Paint paint;
     private float screenWidth;
     private float screenHeight;
+
+    MediaPlayer backgroundMusic;
+    SoundPool sp;
+    int soundIds[];
 
     Random random = new Random();
     int frameCount;
@@ -54,6 +61,7 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
     public GameSurfaceView(Context context, float screenWidth, float screenHeight) {
         super(context);
 
+
         highscore = PreferenceManager.getDefaultSharedPreferences(context).getInt("HIGH SCORE", 0);
         this.context = context;
         this.screenWidth = screenWidth;
@@ -67,6 +75,14 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
         score = 0;
         lifes = 3;
         nexTop = 30;
+
+        backgroundMusic = MediaPlayer.create(context, R.raw.music1);
+        backgroundMusic.setLooping(true);
+        backgroundMusic.setVolume(10.0f, 3.0f);
+        backgroundMusic.start();
+        sp = new SoundPool(10, AudioManager.STREAM_MUSIC, 0);
+        fillSounds();
+
 
         player = new Player(context, screenWidth, screenHeight);
         playerSpeed = 7;
@@ -83,6 +99,31 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
         holder = getHolder();
     }
 
+    private void fillSounds() {
+        soundIds = new int[20];
+
+        soundIds[0] = sp.load(context, R.raw.xwing_init, 1);
+
+        soundIds[1] = sp.load(context, R.raw.tie_fly1, 1);
+        soundIds[2] = sp.load(context, R.raw.tie_fly2, 1);
+        soundIds[3] = sp.load(context, R.raw.tie_fly3, 1);
+        soundIds[4] = sp.load(context, R.raw.tie_fly4, 1);
+
+        soundIds[5] = sp.load(context, R.raw.tie_fire1, 1);
+        soundIds[6] = sp.load(context, R.raw.tie_fire2, 1);
+
+        soundIds[7] = sp.load(context, R.raw.r2d2_winlife, 1);
+        soundIds[8] = sp.load(context, R.raw.r2d2_hitplayer1, 1);
+        soundIds[9] = sp.load(context, R.raw.r2d2_hitplayer2, 1);
+        soundIds[10] = sp.load(context, R.raw.r2d2_hitplayer3, 1);
+        soundIds[11] = sp.load(context, R.raw.r2d2_fuuuuuuuck, 1);
+
+        soundIds[12] = sp.load(context, R.raw.exp1, 1);
+        soundIds[13] = sp.load(context, R.raw.exp3, 1);
+        soundIds[14] = sp.load(context, R.raw.exp2, 1);
+
+    }
+
     /**
      * Method implemented from runnable interface
      */
@@ -94,8 +135,9 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
             frameCount %= Integer.MAX_VALUE - 10000;
             actualTime = System.currentTimeMillis();
             updateBackGround();
-            if (actualTime - initTime > 500) {
-                if(isDead)
+            if (actualTime - initTime > 1000) {
+
+                if (isDead)
                     updateDeadInfo();
                 else if (isGaming)
                     updateInfo();
@@ -111,7 +153,7 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
 
     private void updateDeadInfo() {
         speed--;
-        speed=Math.max(speed, 0);
+        speed = Math.max(speed, 0);
         player.updateInfo(actualTime);
         for (Bullet pb : playerBullets) {
             pb.setSpeed(speed);
@@ -124,7 +166,8 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
         for (Asteroid a : asteroids) {
             a.setSpeed(speed);
             a.updateInfo();
-        }        for (EnemyShip e : enemyShips){
+        }
+        for (EnemyShip e : enemyShips) {
             e.setSpeed(speed);
             e.updateInfo();
         }
@@ -143,12 +186,12 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
     }
 
     private void updateInfo() {
-        if (frameCount%100 == 0)
+        if (frameCount % 100 == 0)
             speed++;
-        if (frameCount%200 == 0)
+        if (frameCount % 200 == 0)
             playerSpeed++;
-        speed=Math.min(speed,100);
-        playerSpeed=Math.min(playerSpeed,15);
+        speed = Math.min(speed, 100);
+        playerSpeed = Math.min(playerSpeed, 15);
 
         player.updateInfo(actualTime);
         for (Bullet pb : playerBullets) {
@@ -166,8 +209,13 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
 
 
         for (EnemyShip e : enemyShips) {
-            if (random.nextInt(100) < 1 || frameCount%120 == 0)
+            if (random.nextInt(100) < 1 || frameCount % 120 == 0) {
+                if (e.positionX() + e.spriteSizeWidth() / 2 < screenWidth / 2)
+                    sp.play(soundIds[random.nextInt(2) + 5], 0.5f, 0.2f, 1, 0, 1.0f);
+                else
+                    sp.play(soundIds[random.nextInt(2) + 5], 0.2f, 0.5f, 1, 0, 1.0f);
                 enemyBullets.add(new Bullet(context, screenWidth, screenHeight, e.positionX() + e.spriteSizeWidth() / 2, e.positionY() + e.spriteSizeHeigth(), false));
+            }
         }
         for (Bullet pb : enemyBullets) {
             pb.setSpeed(speed);
@@ -178,9 +226,15 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
                 enemyBullets.remove(i--);
         }
 
-        if (random.nextInt(1000) < 7 || frameCount%150 == 0)
-            enemyShips.add(new EnemyShip(context, screenWidth, screenHeight));
-        for (EnemyShip e : enemyShips){
+        if (random.nextInt(1000) < 7 || frameCount % 150 == 0) {
+            EnemyShip e = new EnemyShip(context, screenWidth, screenHeight);
+            enemyShips.add(e);
+            if (e.positionX() + e.spriteSizeWidth() / 2 < screenWidth / 2 && actualTime%2==0)
+                sp.play(soundIds[random.nextInt(4) + 1], 0.3f, 0.2f, 0, 0, 1.0f);
+            else if (actualTime%2==0)
+                sp.play(soundIds[random.nextInt(4) + 1], 0.1f, 0.3f, 0, 0, 1.0f);
+        }
+        for (EnemyShip e : enemyShips) {
             e.setSpeed(speed);
             e.updateInfo();
         }
@@ -191,9 +245,14 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
                 enemyShips.get(i).disableCollide();
                 score += 2;
                 lifes--;
+                if (enemyShips.get(i).positionX() + enemyShips.get(i).spriteSizeWidth() / 2 < screenWidth / 2)
+                    sp.play(soundIds[random.nextInt(3) + 12], 0.4f, 0.2f, 1, 0, 1.0f);
+                else
+                    sp.play(soundIds[random.nextInt(3) + 12], 0.2f, 0.4f, 1, 0, 1.0f);
+                sp.play(soundIds[random.nextInt(3)]+8, 0.7f, 0.7f, 1, 0, 1.0f);
             }
 
-        if (random.nextInt(1000) < 10|| frameCount%120 == 0)
+        if (random.nextInt(1000) < 10 || frameCount % 120 == 0)
             asteroids.add(new Asteroid(context, screenWidth, screenHeight));
         for (Asteroid a : asteroids) {
             a.setSpeed(speed);
@@ -201,26 +260,35 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
         }
         for (int i = 0; i < asteroids.size(); i++)
             if (asteroids.get(i).positionY() > screenHeight + asteroids.get(i).spriteSizeHeigth()) {
-                score --;
+                score--;
                 asteroids.remove(i--);
             } else if (collide(player, asteroids.get(i))) {
                 asteroids.get(i).disableCollide();
                 lifes--;
+                if (asteroids.get(i).positionX() + asteroids.get(i).spriteSizeWidth() / 2 < screenWidth / 2)
+                    sp.play(soundIds[random.nextInt(3) + 12], 0.4f, 0.2f, 1, 0, 1.0f);
+                else
+                    sp.play(soundIds[random.nextInt(3) + 12], 0.2f, 0.4f, 1, 0, 1.0f);
+
+                sp.play(soundIds[random.nextInt(3)]+8, 0.7f, 0.7f, 1, 0, 1.0f);
             }
 
         checkBulletsCollitions();
 
 
         if (score >= nexTop) {
+            sp.play(soundIds[7], 0.6f, 0.6f, 1, 0, 1);
             lifes++;
             nexTop += 40;
         }
 
-        if(lifes<1){
-            lifes=0;
+        if (lifes < 1) {
+            lifes = 0;
+            sp.stop(soundIds[8]);
+            sp.play(soundIds[9], 0.7f, 0.7f, 1, 0, 1.0f);
             player.disableCollide();
             isDead = true;
-            isGaming=false;
+            isGaming = false;
             deathTime = System.currentTimeMillis();
         }
     }
@@ -232,8 +300,12 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
 
             for (int j = 0; j < enemyShips.size(); j++) {
                 if (collide(playerBullets.get(i), enemyShips.get(j))) {
-                    score+=3;
+                    score += 3;
                     enemyShips.get(j).disableCollide();
+                    if (enemyShips.get(j).positionX() + enemyShips.get(j).spriteSizeWidth() / 2 < screenWidth / 2)
+                        sp.play(soundIds[random.nextInt(3) + 12], 0.4f, 0.2f, 1, 0, 1.0f);
+                    else
+                        sp.play(soundIds[random.nextInt(3) + 12], 0.2f, 0.4f, 1, 0, 1.0f);
                     playerBullets.remove(i--);
                     continue loop;
                 }
@@ -241,8 +313,12 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
 
             for (int j = 0; j < asteroids.size(); j++) {
                 if (collide(playerBullets.get(i), asteroids.get(j))) {
-                    score+=2;
+                    score += 2;
                     asteroids.get(j).disableCollide();
+                    if (asteroids.get(j).positionX() + asteroids.get(j).spriteSizeWidth() / 2 < screenWidth / 2)
+                        sp.play(soundIds[random.nextInt(3) + 12], 0.4f, 0.2f, 1, 0, 1.0f);
+                    else
+                        sp.play(soundIds[random.nextInt(3) + 12], 0.2f, 0.4f, 1, 0, 1.0f);
                     playerBullets.remove(i--);
                     continue loop;
                 }
@@ -252,6 +328,7 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
         for (int i = 0; i < enemyBullets.size(); i++) {
             if (collide(enemyBullets.get(i), player)) {
                 lifes--;
+                sp.play(soundIds[random.nextInt(3)]+8, 0.7f, 0.7f, 1, 0, 1.0f);
                 enemyBullets.remove(i--);
             }
         }
@@ -304,8 +381,9 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        backgroundMusic.release();
+        sp.release();
     }
-
 
     public void resume() {
         isPlaying = true;
@@ -323,6 +401,8 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
     public boolean onTouchEvent(MotionEvent motionEvent) {
         switch (motionEvent.getAction() & MotionEvent.ACTION_MASK) {
             case MotionEvent.ACTION_UP:
+                if (!isGaming)
+                    sp.play(soundIds[0], 1f, 1f, 1, 0, 1);
                 isGaming = true;
                 player.setSpeed(0);
                 break;
@@ -335,8 +415,8 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
 
                 break;
         }
-        if(isDead){
-            if(actualTime-deathTime>1000){
+        if (isDead) {
+            if (actualTime - deathTime > 1000) {
                 initTime = System.currentTimeMillis();
                 frameCount = 0;
                 isPlaying = true;

@@ -2,6 +2,7 @@ package co.devbeerloper.myicecreamgame;
 
 import android.content.pm.ActivityInfo;
 import android.graphics.Point;
+import android.media.AudioManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Display;
@@ -19,7 +20,7 @@ public class GamePlay extends AppCompatActivity {
         Display display = getWindowManager().getDefaultDisplay();
         Point screenSize = new Point();
         display.getRealSize(screenSize);
-
+        setVolumeControlStream(AudioManager.STREAM_MUSIC);
         gameSurfaceView = new GameSurfaceView(this, screenSize.x, screenSize.y);
         setContentView(gameSurfaceView);
 

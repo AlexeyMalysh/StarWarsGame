@@ -25,4 +25,9 @@ public class MainActivity extends AppCompatActivity {
     public void playGame (View view){
         startActivity(new Intent(this, GamePlay.class));
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
 }
