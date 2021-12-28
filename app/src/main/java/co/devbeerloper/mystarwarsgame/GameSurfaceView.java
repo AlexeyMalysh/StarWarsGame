@@ -60,12 +60,12 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
     /**
      * Contructor
      *
-     * @param context
+     * @param contextо
      */
     public GameSurfaceView(Context context, float screenWidth, float screenHeight) {
         super(context);
 
-        Bitmap originalBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.gameover);
+        Bitmap originalBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.img_3);
         gameOver = Bitmap.createScaledBitmap(originalBitmap, (int) (screenWidth * 3 / 100) * 30, (int) (screenHeight * 3 / 100) * 8, false);
         highscore = PreferenceManager.getDefaultSharedPreferences(context).getInt("HIGH SCORE", 0);
         this.context = context;
@@ -286,7 +286,7 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
                 sp.play(soundIds[random.nextInt(3)] + 8, 0.7f, 0.7f, 1, 0, 1.0f);
             }
 
-        checkBulletsCollitions();
+        checkBulletsCollisions();
 
 
         if (score >= nexTop) {
@@ -309,8 +309,52 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
             deathTime = System.currentTimeMillis();
         }
     }
+    @Override
+    public boolean onTouchEvent(MotionEvent motionEvent) {
+        switch (motionEvent.getAction() & MotionEvent.ACTION_MASK) {
+            case MotionEvent.ACTION_UP:
+                if (!isGaming)
+                    sp.play(soundIds[0], 1f, 1f, 1, 0, 1);
+                isGaming = true;
+                player.setSpeed(0);
+                break;
+            case MotionEvent.ACTION_DOWN:
+                float xValue = motionEvent.getX();
+                if (xValue <= screenWidth / 2 && !isDead) {
+                    player.setSpeed(-playerSpeed);
+                } else if (!isDead)
+                    player.setSpeed(playerSpeed);
 
-    private void checkBulletsCollitions() {
+                break;
+        }
+        if (isDead) {
+            if (actualTime - deathTime > 1000) {
+                initTime = System.currentTimeMillis();
+                frameCount = 0;
+                isPlaying = true;
+                isGaming = false;
+                isDead = false;
+                speed = 0;
+                score = 0;
+                lifes = 3;
+                nexTop = 30;
+
+                player = new Player(context, screenWidth, screenHeight);
+                playerSpeed = 7;
+                playerBullets = new ArrayList<Bullet>();
+                enemyShips = new ArrayList<EnemyShip>();
+                enemyBullets = new ArrayList<Bullet>();
+                asteroids = new ArrayList<Asteroid>();
+
+            }
+
+        }
+
+        return true;
+    }
+
+
+    private void checkBulletsCollisions() {
 
         loop:
         for (int i = 0; i < playerBullets.size(); i++) {
@@ -424,48 +468,5 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
      * @param motionEvent
      * @return
      */
-    @Override
-    public boolean onTouchEvent(MotionEvent motionEvent) {
-        switch (motionEvent.getAction() & MotionEvent.ACTION_MASK) {
-            case MotionEvent.ACTION_UP:
-                if (!isGaming)
-                    sp.play(soundIds[0], 1f, 1f, 1, 0, 1);
-                isGaming = true;
-                player.setSpeed(0);
-                break;
-            case MotionEvent.ACTION_DOWN:
-                float xValue = motionEvent.getX();
-                if (xValue <= screenWidth / 2 && !isDead) {
-                    player.setSpeed(-playerSpeed);
-                } else if (!isDead)
-                    player.setSpeed(playerSpeed);
-
-                break;
-        }
-        if (isDead) {
-            if (actualTime - deathTime > 1000) {
-                initTime = System.currentTimeMillis();
-                frameCount = 0;
-                isPlaying = true;
-                isGaming = false;
-                isDead = false;
-                speed = 0;
-                score = 0;
-                lifes = 3;
-                nexTop = 30;
-
-                player = new Player(context, screenWidth, screenHeight);
-                playerSpeed = 7;
-                playerBullets = new ArrayList<Bullet>();
-                enemyShips = new ArrayList<EnemyShip>();
-                enemyBullets = new ArrayList<Bullet>();
-                asteroids = new ArrayList<Asteroid>();
-
-            }
-
-        }
-
-        return true;
-    }
 
 }

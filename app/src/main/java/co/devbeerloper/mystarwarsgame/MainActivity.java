@@ -52,6 +52,10 @@ public class MainActivity extends AppCompatActivity {
         startActivity(new Intent(this, GamePlay.class));
     }
 
+    public void exit(View view){
+        finish();
+    }
+
     @Override
     protected void onDestroy() {
         backgroundMusic.release();

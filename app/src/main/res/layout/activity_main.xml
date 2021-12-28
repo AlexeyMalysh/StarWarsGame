@@ -8,94 +8,8 @@
     tools:context=".MainActivity">
 
 
-    <TextView
-        android:id="@+id/tv1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Player"
-        android:textColor="@color/colorYellow"
-        android:textSize="30sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/hor12"
-        app:layout_constraintEnd_toStartOf="@id/ver3"
-        app:layout_constraintStart_toEndOf="@id/ver2"
-        app:layout_constraintTop_toBottomOf="@id/hor1" />
-
-    <TextView
-        android:id="@+id/tv3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Destroy\n    +2"
-        android:textColor="@color/colorYellow"
-        android:textSize="30sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@id/hor13"
-        app:layout_constraintStart_toEndOf="@id/ver2"
-        app:layout_constraintEnd_toStartOf="@id/ver3"
-        app:layout_constraintTop_toBottomOf="@id/hor12"
-        />
-
-    <TextView
-        android:id="@+id/tv4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Enemy\n    +3"
-        android:textColor="@color/colorYellow"
-        android:textSize="30sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@id/hor13"
-        app:layout_constraintStart_toEndOf="@id/ver2"
-        app:layout_constraintEnd_toStartOf="@id/ver3"
-        app:layout_constraintTop_toBottomOf="@id/hor2"
-        />
-
-    <ImageView
-        android:id="@+id/player"
-        android:layout_width="84dp"
-        android:layout_height="84dp"
-        android:scaleType="fitXY"
-        app:layout_constraintBottom_toTopOf="@+id/hor12"
-        app:layout_constraintEnd_toStartOf="@id/ver2"
-        app:layout_constraintStart_toEndOf="@id/ver1"
-        app:layout_constraintTop_toBottomOf="@id/hor1"
-        app:srcCompat="@drawable/xwing" />
-
-    <ImageView
-        android:id="@+id/powerUp"
-        android:layout_width="71dp"
-        android:layout_height="71dp"
-        android:scaleType="fitXY"
-        app:layout_constraintBottom_toTopOf="@id/hor13"
-        app:layout_constraintEnd_toStartOf="@id/ver2"
-        app:layout_constraintStart_toEndOf="@id/ver1"
-        app:layout_constraintTop_toBottomOf="@id/hor12"
-        app:srcCompat="@drawable/asteroid" />
 
 
-    <ImageView
-        android:id="@+id/tiefighter"
-        android:layout_width="82dp"
-        android:layout_height="82dp"
-        android:scaleType="fitXY"
-        app:layout_constraintBottom_toTopOf="@id/hor2"
-        app:layout_constraintEnd_toStartOf="@+id/ver2"
-        app:layout_constraintStart_toStartOf="@+id/ver1"
-        app:layout_constraintTop_toBottomOf="@id/hor13"
-        app:layout_constraintVertical_bias="0.575"
-        app:srcCompat="@drawable/tiefighter" />
-
-    <TextView
-        android:id="@+id/tv5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="By Fernanda Moreno - Andrés Osorio"
-        android:textColor="@color/colorBlueALongTimeAgo"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/ver1"
-        app:layout_constraintEnd_toStartOf="@id/ver3"
-        app:layout_constraintTop_toBottomOf="@id/hor3"
-        />
 
     <android.support.constraint.Guideline
         android:id="@+id/hor1"
@@ -153,28 +67,42 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.95" />
 
-    <ImageView
-        android:id="@+id/starwars"
-        android:layout_width="186dp"
-        android:layout_height="155dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toStartOf="@+id/ver3"
-        app:layout_constraintStart_toStartOf="@+id/ver1"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/starwars2" />
 
-    <ImageView
+
+    <TextView
         android:id="@+id/imageView12"
-        android:layout_width="136dp"
+        android:layout_width="200dp"
         android:layout_height="70dp"
-        app:layout_constraintBottom_toTopOf="@+id/tv5"
+        android:clickable="true"
+        android:text="Play"
+        android:textSize="55dp"
+        android:onClick="playGame"
+        android:gravity="center"
+        android:textColor="#000000"
         app:layout_constraintEnd_toStartOf="@+id/ver3"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="@+id/ver1"
-        app:layout_constraintTop_toTopOf="@+id/hor2"
-        app:layout_constraintVertical_bias="0.488"
-        app:srcCompat="@drawable/play"
+        app:layout_constraintTop_toTopOf="@+id/hor1"
+        app:layout_constraintVertical_bias="0.466"
+        android:background="@drawable/img"
+       />
+
+    <TextView
+        android:id="@+id/imageView22"
+        android:layout_width="200dp"
+        android:layout_height="70dp"
         android:clickable="true"
-        android:onClick="playGame"/>
+        android:text="Exit"
+        android:textSize="55dp"
+        android:onClick="exit"
+        android:gravity="center"
+        android:textColor="#000000"
+        app:layout_constraintEnd_toStartOf="@+id/ver3"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="@+id/ver1"
+        app:layout_constraintTop_toTopOf="@+id/hor12"
+        app:layout_constraintVertical_bias="0.466"
+        android:background="@drawable/img"
+        />
 
 </android.support.constraint.ConstraintLayout>

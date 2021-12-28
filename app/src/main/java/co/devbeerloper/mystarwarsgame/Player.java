@@ -33,11 +33,11 @@ public class Player implements Sprite {
         canCollide =true;
 
         //Getting bitmap from resource
-        Bitmap originalBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.xwing);
+        Bitmap originalBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.img_1);
         sprites[0] = Bitmap.createScaledBitmap(originalBitmap, initSizeWidth, initSizeHeight, false);
-        Bitmap leftBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.xwing1);
+        Bitmap leftBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.img_1);
         sprites[1] = Bitmap.createScaledBitmap(leftBitmap, initSizeWidth, initSizeHeight, false);
-        Bitmap rightBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.xwing2);
+        Bitmap rightBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.img_1);
         sprites[2] = Bitmap.createScaledBitmap(rightBitmap, initSizeWidth, initSizeHeight, false);
         Bitmap kaboom1Bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.kaboom1);
         sprites[3] = Bitmap.createScaledBitmap(kaboom1Bitmap, initSizeWidth, initSizeHeight, false);

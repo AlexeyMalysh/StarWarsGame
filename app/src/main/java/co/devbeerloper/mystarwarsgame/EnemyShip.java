@@ -34,7 +34,7 @@ public class EnemyShip implements Sprite {    public static final float INIT_X =
 
 
         //Getting bitmap from resource
-        Bitmap originalBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.tiefighter);
+        Bitmap originalBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.warrior2);
         sprites[0] = Bitmap.createScaledBitmap(originalBitmap, initSizeWidth, initSizeHeight, false);
         Bitmap kaboom1Bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.kaboom1);
         sprites[1] = Bitmap.createScaledBitmap(kaboom1Bitmap, initSizeWidth, initSizeHeight, false);
@@ -53,18 +53,7 @@ public class EnemyShip implements Sprite {    public static final float INIT_X =
     }
 
 
-    public void updateInfo() {
-
-            positionY += speed;
-        if(!canCollide){
-            actualSprite++;
-        }
-        if(actualSprite>=sprites.length) {
-            positionY += maxY + speed + spriteSizeHeigth();
-            actualSprite--;
-            return;
-        }
-    }
+    ///////////////////////////////////////цуайайацййц2цвйцвйвцйвйцвцйвцйвйв
 
     public void setSpeed(float speed) {
         this.speed = speed + speedbase;
@@ -109,5 +98,16 @@ public class EnemyShip implements Sprite {    public static final float INIT_X =
         return canCollide;
     }
 
-
+    public void updateInfo() {
+//////йцвйцвйц
+        positionY += speed;
+        if(!canCollide){
+            actualSprite++;
+        }
+        if(actualSprite>=sprites.length) {
+            positionY += maxY + speed + spriteSizeHeigth();
+            actualSprite--;
+            return;
+        }////вццйвйцв//цйвйц///цйв/йцв/йцв/йав/йавй/цва/цййв/йцв/йцв/цйвйц/вйц/в/йцвй/цвй/вцй/вцй/
+    }
 }

@@ -32,7 +32,7 @@ public class Asteroid implements Sprite {
         canCollide = true;
 
         //Getting bitmap from resource
-        Bitmap originalBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.asteroid);
+        Bitmap originalBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.img_2);
         sprites[0] = Bitmap.createScaledBitmap(originalBitmap, initSizeWidth, initSizeHeight, false);
         Bitmap kaboom1Bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.kaboom1);
         sprites[1] = Bitmap.createScaledBitmap(kaboom1Bitmap, initSizeWidth, initSizeHeight, false);
