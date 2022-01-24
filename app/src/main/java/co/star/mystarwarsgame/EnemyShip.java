@@ -1,4 +1,4 @@
-package co.devbeerloper.mystarwarsgame;
+package co.star.mystarwarsgame;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -34,7 +34,7 @@ public class EnemyShip implements Sprite {    public static final float INIT_X =
 
 
         //Getting bitmap from resource
-        Bitmap originalBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.warrior2);
+        Bitmap originalBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.nightraiderfixed);
         sprites[0] = Bitmap.createScaledBitmap(originalBitmap, initSizeWidth, initSizeHeight, false);
         Bitmap kaboom1Bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.kaboom1);
         sprites[1] = Bitmap.createScaledBitmap(kaboom1Bitmap, initSizeWidth, initSizeHeight, false);

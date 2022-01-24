@@ -1,4 +1,4 @@
-package co.devbeerloper.mystarwarsgame;
+package co.star.mystarwarsgame;
 
 import android.graphics.Point;
 import android.media.AudioManager;

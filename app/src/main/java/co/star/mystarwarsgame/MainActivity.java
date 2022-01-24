@@ -1,4 +1,4 @@
-package co.devbeerloper.mystarwarsgame;
+package co.star.mystarwarsgame;
 
 import android.content.Intent;
 import android.media.MediaPlayer;

@@ -1,4 +1,4 @@
-package co.devbeerloper.mystarwarsgame;
+package co.star.mystarwarsgame;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
