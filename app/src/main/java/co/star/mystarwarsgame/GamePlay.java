@@ -2,9 +2,11 @@ package co.star.mystarwarsgame;
 
 import android.graphics.Point;
 import android.media.AudioManager;
-import android.support.v7.app.AppCompatActivity;
+
 import android.os.Bundle;
 import android.view.Display;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class GamePlay extends AppCompatActivity {
 

@@ -5,7 +5,7 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Build;
-import android.support.annotation.RequiresApi;
+
 import android.util.Log;
 import android.webkit.CookieManager;
 import android.webkit.WebSettings;
@@ -13,6 +13,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 
+import androidx.annotation.RequiresApi;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -68,6 +69,7 @@ public class WebPresenter {
             sets();
 
             WebViewClient webViewClient = new WebViewClient() {
+
 
                 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
                 @Override
